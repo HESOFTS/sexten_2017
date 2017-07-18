@@ -1,2 +1,2 @@
-GRB080916009  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  data/GRB080916009.out  2.0   data/lightcrv_GRB080916009.fits
+GRB080916009  Point  1  329.719  -30.2217   0   0   0   FUNC  1.0  data/GRB080916009.out  2.0   data/lightcrv_GRB080916009.fits
 BKG          CTAIrf  0      0       0       0   0   0   PL    1.0       0.0          0.3*TeV
