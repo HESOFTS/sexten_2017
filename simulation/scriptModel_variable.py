@@ -77,14 +77,14 @@ def sourceDef(info):
         print('The source ' + srcname + ' is a ' + modelname)    
 
         #create SPECTRAL model
-        spectral = specFun(info[7:])        #string        
+        spectral = specFun(info[8:])        #string        
         source_branch.append(spectral)    
     else:       
         print("------source: " + srcname + "-------")
         print('The source ' + srcname + ' is a ' + modelname)    
 
         #create SPECTRAL model
-        spectral = specFun(info[7:])        #string        
+        spectral = specFun(info[8:])        #string        
         source_branch.append(spectral)    
 
         #create SPATIAL model    

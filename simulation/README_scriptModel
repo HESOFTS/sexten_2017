@@ -1,25 +1,51 @@
---- README per lo script: scriptModel_variable.py
+-------------- README : scriptModel_variable.py  -------------------------------
 
-Lo script ha lo scopo di generare un file per caratterizzare una sorgente di GRB 
-di tipo .xml nel formato utilizzabile da ctools a partire da due righe di testo 
-in un file .txt
-Riferimenti dettagliati alla pagina: http://cta.irap.omp.eu/ctools/index.html
+The script generates a .xml file to caraterise one or more GRBs models in the
+ctools standard starting from .txt file.
 
-Per una spiegazione dettagliata dei modelli consultare la pagina:
+
+General references at the page: 
+	http://cta.irap.omp.eu/ctools/index.html
+
+Specific references about ctools models:
 	http://cta.irap.omp.eu/gammalib/user_manual/modules/model.html
 
-(per diffuse map salvare map.fits)
----------------------
+If you need to use diffuse map model, save map file as "map.fits" 
+	in the same directory
 
-Nella prima linea di testo vanno inseriti, in ordine, i seguenti parametri:
+If you need to use diffuse map cube, save map cube file as "map_cube.fits" 
+	in the same directory	
 
-- nome del GRB
-- tipo di modello utilizzato. Va scelto uno dei possibili parametri nel segunte 
-	elenco: 
+--------------------------------------------------------------------------------
+
+A line in the txt file represent a GRB. There must be all the values separeted
+by at least one space charater. If the value is not necessary, put anyway at least
+one character (0 as standard).
+
+EXAMPLE:
+GRB4  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  data/GRB4.out  2.0   data/lightcrv_GRB4.fits
+
+The order must be as follow:
+
+- GRB name or background name (must start with BKG)
+
+- type of used model. Must be chosen one inside this list: 
 	Point, RadDisk, RadGauss, RadShell, EllDisk, EllGauss, DiffIso,
 	DiffMap, DiffMapCube, BkgGauss, Profile, Polynom, CTAIrf, CTACube
-- Possibilità di calcolare il test statistics:
-	1 per eseguire
-	0 non eseguire 	
-- RA ascensione retta di puntamento
-- DEC declinazione di puntamento
+
+- 1 to execute test statistics, else 0 	
+
+- after the first 3 values you have 5 values that depends on the model:
+	Point Source  -------> RA   DEC  0  		0   		0
+	Radial Disk   -------> RA   DEC  Radius 	0 			0
+	Radial Gaussian -----> RA   DEC  Sigma 		0			0
+	Radial Shell  -------> RA   DEC  Radius		Width		0
+	Elliptical disk -----> RA   DEC  PA 		MinorRad	MajorRad
+	Elliptical Gaussian -> RA   DEC  PA 		MinorRad	MajorRad
+	Isotropic source ----> Cost 0	 0			0			0
+	Diffuse Map ---------> Pref 0	 0			0			0
+	Diffuse Map Cube ----> Norm 0	 0			0			0
+
+
+EXAMPLE:
+GRB4  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  data/GRB4.out  2.0   data/lightcrv_GRB4.fits
