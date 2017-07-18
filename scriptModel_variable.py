@@ -65,23 +65,23 @@ def sourceDef(info):
     elif (modelname in bkg_cube):
         source_txt = 'source name="Background" type="CTACubeBackground" instrument="CTA"'
     else:        
-        print("The only supported spatial model is a point source")
+        print("Mispelled spatial model, open the .txt and check it!")
         sys.exit() 
 
     if (ts == "1"):
-        source_txt=source_txt+'  tscalc="1"'
+        source_txt = source_txt + ' tscalc="1"'
 
     source_branch = gammalib.GXmlElement(source_txt)           
     if (srcname == "BKG"):
         print("-----------background-----------")
-        print('The source '+srcname+' is a '+modelname)    
+        print('The source ' + srcname + ' is a ' + modelname)    
 
         #create SPECTRAL model
         spectral = specFun(info[7:])        #string        
         source_branch.append(spectral)    
     else:       
-        print("------source: "+srcname+"-------")
-        print('The source '+srcname+' is a '+modelname)    
+        print("------source: " + srcname + "-------")
+        print('The source ' + srcname + ' is a ' + modelname)    
 
         #create SPECTRAL model
         spectral = specFun(info[7:])        #string        
@@ -125,23 +125,83 @@ def spatFun(inSpat):
         spatial = gammalib.GXmlElement('spatialModel type="SkyDirFunction"')
         spatial.append(gammalib.GXmlElement(ra_text))
         spatial.append(gammalib.GXmlElement(dec_text))
+
+    elif (SpatModel == 'RadDisk'):
+        spatial = gammalib.GXmlElement('spatialModel type="DiskFunction"')
+        spatial.append(gammalib.GXmlElement(ra_text))
+        spatial.append(gammalib.GXmlElement(dec_text))
+        radius = inSpat[4]
+        radius_text = 'name="Radius" scale="1.0"  min="0.01" max="10"  free="0"   value="' + radius +'"'
+        spatial.append(gammalib.GXmlElement(radius_text))
+
+    elif (SpatModel == 'RadGauss'):
+        spatial = gammalib.GXmlElement('spatialModel type="GaussFunction"')
+        spatial.append(gammalib.GXmlElement(ra_text))
+        spatial.append(gammalib.GXmlElement(dec_text))
+        sig = inSpat[4]
+        sig_text = 'name="Sigma" scale="1.0"  min="0.01" max="10"  free="0"   value="' + sig +'"'
+        spatial.append(gammalib.GXmlElement(sig_text))
+
+    elif (SpatModel == 'RadShell'):
+        spatial = gammalib.GXmlElement('spatialModel type="ShellFunction"')
+        spatial.append(gammalib.GXmlElement(ra_text))
+        spatial.append(gammalib.GXmlElement(dec_text))
+        radius = inSpat[4]
+        width  = inSpat[5]
+        radius_text = 'name="Radius" scale="1.0"  min="0.01" max="10"  free="0"  value="' + radius +'"'
+        width_text  = 'name="Width"  scale="1.0"  min="0.01" max="10"  free="0"  value="' + width + '"'
+        spatial.append(gammalib.GXmlElement(radius_text))
+        spatial.append(gammalib.GXmlElement(width_text))
+
+    elif (SpatModel == 'EllDisk'):
+        spatial = gammalib.GXmlElement('spatialModel type="EllipticalDisk"')
+        spatial.append(gammalib.GXmlElement(ra_text))
+        spatial.append(gammalib.GXmlElement(dec_text))
+        PA = inSpat[4]
+        minr  = inSpat[5]
+        maxr  = inSpat[6]
+        PA_text   = 'name="PA"           scale="1.0"  min="-360"   max="360" free="0"  value="' + PA +'"'
+        minr_text = 'name="MinorRadius"  scale="1.0"  min="0.001"  max="10"  free="0"  value="' + minr + '"'
+        maxr_text = 'name="MajorRadius"  scale="1.0"  min="0.001"  max="10"  free="0"  value="' + maxr + '"'
+        spatial.append(gammalib.GXmlElement(PA_text))
+        spatial.append(gammalib.GXmlElement(minr_text))
+        spatial.append(gammalib.GXmlElement(maxr_text))
+
+    elif (SpatModel == 'EllGauss'):
+        spatial = gammalib.GXmlElement('spatialModel type="EllipticalGauss"')
+        spatial.append(gammalib.GXmlElement(ra_text))
+        spatial.append(gammalib.GXmlElement(dec_text))
+        PA = inSpat[4]
+        minr  = inSpat[5]
+        maxr  = inSpat[6]
+        PA_text   = 'name="PA"           scale="1.0"  min="-360"   max="360" free="0"  value="' + PA +'"'
+        minr_text = 'name="MinorRadius"  scale="1.0"  min="0.001"  max="10"  free="0"  value="' + minr + '"'
+        maxr_text = 'name="MajorRadius"  scale="1.0"  min="0.001"  max="10"  free="0"  value="' + maxr + '"'
+        spatial.append(gammalib.GXmlElement(PA_text))
+        spatial.append(gammalib.GXmlElement(minr_text))
+        spatial.append(gammalib.GXmlElement(maxr_text))
+
+    elif (SpatModel == 'DiffIso'):
+        spatial = gammalib.GXmlElement('spatialModel type="DiffuseSource"')
+        value = inSpat[4]
+        value_text = 'name="Value" scale="1" min="1"  max="1" free="0" value="' + value +'"'
+    	spatial.append(gammalib.GXmlElement(value_text))
+
+    elif (SpatModel == 'DiffMap'):
+        spatial = gammalib.GXmlElement('spatialModel type="DiffuseSource" file="map.fits"')
+        value = inSpat[4]
+        value_text = 'name="Prefactor" scale="1" min="0.001"  max="1000.0" free="0" value="' + value +'"'
+    	spatial.append(gammalib.GXmlElement(value_text))
+
+    elif (SpatModel == 'DiffMapCube'):
+        spatial = gammalib.GXmlElement('spatialModel type="MapCubeFunction" file="map_cube.fits"')
+        value = inSpat[4]
+        value_text = 'name="Normalization" scale="1" min="0.001"  max="1000.0" free="0" value="' + value +'"'
+    	spatial.append(gammalib.GXmlElement(value_text))	
+
     else:
-        print("The only supported spatial model is a point source")
+        print("Wrong input model")
         sys.exit()
-#
-#    elif (SpatModel == 'RadDisk'):
-#        print(SpatModel)
-#    elif (SpatModel == 'RadGauss'):
-#        print(SpatModel)
-#    elif (SpatModel == 'RadShell'):
-#        print(SpatModel)
-#    elif (SpatModel == 'EllDisk'):
-#        print(SpatModel)
-#    elif (SpatModel == 'EllGauss'):
-#        print(SpatModel)
-#    else:
-#        print("Wrong input model")
-#        sys.exit()
     return spatial
 
 def specFun(inSpec):
