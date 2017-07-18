@@ -1,0 +1,25 @@
+--- README per lo script: scriptModel_variable.py
+
+Lo script ha lo scopo di generare un file per caratterizzare una sorgente di GRB 
+di tipo .xml nel formato utilizzabile da ctools a partire da due righe di testo 
+in un file .txt
+Riferimenti dettagliati alla pagina: http://cta.irap.omp.eu/ctools/index.html
+
+Per una spiegazione dettagliata dei modelli consultare la pagina:
+	http://cta.irap.omp.eu/gammalib/user_manual/modules/model.html
+
+(per diffuse map salvare map.fits)
+---------------------
+
+Nella prima linea di testo vanno inseriti, in ordine, i seguenti parametri:
+
+- nome del GRB
+- tipo di modello utilizzato. Va scelto uno dei possibili parametri nel segunte 
+	elenco: 
+	Point, RadDisk, RadGauss, RadShell, EllDisk, EllGauss, DiffIso,
+	DiffMap, DiffMapCube, BkgGauss, Profile, Polynom, CTAIrf, CTACube
+- Possibilità di calcolare il test statistics:
+	1 per eseguire
+	0 non eseguire 	
+- RA ascensione retta di puntamento
+- DEC declinazione di puntamento
