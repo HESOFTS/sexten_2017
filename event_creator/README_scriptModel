@@ -23,13 +23,13 @@ by at least one space charater. If the value is not necessary, put anyway at lea
 one character (0 as standard).
 
 EXAMPLE:
-GRB4  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  data/GRB4.out  2.0   data/lightcrv_GRB4.fits
+GRB_name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  data/GRB_name.out  2.0   data/lightcrv_GRB_name.fits
 
 The order must be as follow:
 
 - GRB name or background name (must start with BKG)
 
-- type of used model. Must be chosen one inside this list: 
+- type of model. Must be one of this list: 
 	Point, RadDisk, RadGauss, RadShell, EllDisk, EllGauss, DiffIso,
 	DiffMap, DiffMapCube, BkgGauss, Profile, Polynom, CTAIrf, CTACube
 
@@ -47,5 +47,6 @@ The order must be as follow:
 	Diffuse Map Cube ----> Norm 0	 0			0			0
 
 
+
 EXAMPLE:
-GRB4  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  data/GRB4.out  2.0   data/lightcrv_GRB4.fits
+GRB_name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  data/GRB_name.out  2.0   data/lightcrv_GRB_name.fits
