@@ -5,11 +5,10 @@ ctools standard starting from .txt file.
 
 
 General references at the page: 
-	http://cta.irap.omp.eu/ctools/index.html
+	http://cta.irap.omp.eu/ctools
 
 Specific references about ctools models:
-	http://cta.irap.omp.eu/gammalib/user_manual/modules/model.html
-
+	http://cta.irap.omp.eu/ctools/users/user_manual/getting_started/models.html
 If you need to use diffuse map model, save map file as "map.fits" 
 	in the same directory
 

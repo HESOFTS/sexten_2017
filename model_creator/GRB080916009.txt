@@ -1,0 +1,2 @@
+GRB080916009  Point  1  329.719  -30.2217   0   0   0   NODE  6 100*MeV 2 300*MeV 4 500*MeV 6 
+BKG          CTAIrf  0      0       0       0   0   0   PL    1.0       0.0          0.3*TeV
