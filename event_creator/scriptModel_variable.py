@@ -240,12 +240,25 @@ def specFun(inSpec):
 
 		spectral = gammalib.GXmlElement('spectrum type="NodeFunction"')
 
-		for n in range(1, n_param, 2):
-			energy =  inSpec[n]
-			intens =  inSpec[n+1]
+		values = []
+		for n in range(2, n_param + 2, 2):
+			print(inSpec[n])
+			print(type(inSpec[n]))
+			values.append(EnConv(inSpec[n], "MeV")) #energy
+			values.append(inSpec[n+1])				#intensity
 
-
-
+		val_x = values[0::2] #select only even characters
+		val_y = values[1::2] #select only odd characters
+		print(val_x)
+		points = [(val_x[i],val_y[i]) for i in range(0, len(val_x))] #making list of points
+		pointss = sorted(points, key=lambda k: k[1])  #sort points by energy
+		print(pointss)
+		for n in range(0, len(pointss)):	
+			energy_text = 'parameter scale="'+str(pointss[n][0][1])+'"   name="Energy"    min="0.1"   max="1.0e20" free="0"  value="'+str(pointss[n][0][0])+'"'
+			intens_text = 'parameter scale="1e-07" name="Intensity" min="1e-07" max="1000.0" free="1" value="'+pointss[n][1]+'"'
+			node = spectral.append('node')
+			node.append(energy_text)
+			node.append(intens_text)
 
 	elif (SpecModel == 'PL'):
 		#POWER LAW MODEL
@@ -333,8 +346,8 @@ def specFun(inSpec):
 		pref_text='parameter scale="'+numdiv(pref)[1]+'"  name="Prefactor"  min="1e-7"   max="1000"  free="1" value="'+numdiv(pref)[0]+'"'
 		index1_text='parameter scale="-1.0"  name="Index1"  min="0.0"   max="+10.0"  free="1" value="'+index1+'"'
 		index2_text='parameter scale="1.0"   name="Index2"  min="0.1"   max="10.0"   free="1" value="'+index2+'"'
-		cut_energy_text='parameter scale="1.0"  name="Cutoff"  min="0.01"   max="100000000.0"  free="1" value="'+str(CutEnergy[0])+'"'
-		piv_energy_text='parameter scale="1.0"  name="Scale"   min="0.01"   max="100000000.0"  free="0" value="'+str(PivotEnergy[0])+'"'
+		cut_energy_text='parameter scale="'+str(CutEnergy[1])+'"  name="Cutoff"  min="0.01"   max="100000000.0"  free="1" value="'+str(CutEnergy[0])+'"'
+		piv_energy_text='parameter scale="'+str(PivotEnergy[1])+'"  name="Scale"   min="0.01"   max="100000000.0"  free="0" value="'+str(PivotEnergy[0])+'"'
 
 
 		spectral = gammalib.GXmlElement('spectrum type="PLSuperExpCutoff"')
