@@ -1,6 +1,6 @@
 ### README : scriptModel_variable.py 
 
-I'm mentioning @thomasgas :+1: :+1:
+I'm mentioning @thomasgas :+1: :+1:  :stuck_out_tongue_closed_eyes:  :stuck_out_tongue_closed_eyes:
 
 The script generates a .xml file to caraterise one or more source models in the
 ctools standard starting from .txt file.
@@ -28,7 +28,7 @@ one character (0 as standard).
 The order must be as follow:
 <ol>
 
-<li>  <b>Source name</b> or background name (must start with BKG) </li>
+<li>  <b>Source name</b> (whatever you want) or background name (must start with BKG) </li>
 
 <li> <b>type of spatial model</b>. Must be one of the following: 
    <ul>
