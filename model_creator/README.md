@@ -53,6 +53,7 @@ The order must be as follow:
    <li>  
     After the first 3 values you have 5 values that depends on the model. It is better
    to use a standard character (0) when the model have less than 5 values.
+   
    |         Spatial model  |  I   |  II  |   III    |   VI    |   V     |
    | ---------------------- |  --- |------|----------|---------|---------|
    | Point Source           | RA   | DEC  |0         |0        |0        |
@@ -64,6 +65,7 @@ The order must be as follow:
    | Isotropic source       | Cost | 0    |0         |0        |0        |
    | Diffuse Map            | Pref | 0    |0         |0        |0        |
    | Diffuse Map Cube       | Norm | 0    |0         |0        |0        |
+   
    </li>
 <li> 
 <b>Type of spectral model </b><small><i>(This is after 5 strings, then position 9) </i></small>.
