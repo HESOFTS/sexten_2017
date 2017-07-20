@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <source_library title="source library">
   <source type="PointSource" name="GRB080916009" tscalc="1">
-    <spectrum type="FileFunction" file="data/GRB080916009.out">
-      <parameter scale="1e+00" name="Normalization" min="1e-7" max="1000" free="1" value="1.00000" />
+    <spectrum type="NodeFunction">
+      <node>
+        <parameter scale="1.0" name="Energy" min="0.1" max="1.0e20" free="0" value="100.0" />
+        <parameter scale="1e-07" name="Intensity" min="1e-07" max="1000.0" free="1" value="2" />
+      </node>
+      <node>
+        <parameter scale="1.0" name="Energy" min="0.1" max="1.0e20" free="0" value="300.0" />
+        <parameter scale="1e-07" name="Intensity" min="1e-07" max="1000.0" free="1" value="4" />
+      </node>
+      <node>
+        <parameter scale="1.0" name="Energy" min="0.1" max="1.0e20" free="0" value="500.0" />
+        <parameter scale="1e-07" name="Intensity" min="1e-07" max="1000.0" free="1" value="6" />
+      </node>
     </spectrum>
     <spatialModel type="SkyDirFunction">
       <parameter scale="1.0" name="RA" min="-360" max="360" free="0" value="329.719" />
       <parameter scale="1.0" name="DEC" min="-90" max="90" free="0" value="-30.2217" />
     </spatialModel>
-    <temporal type="LightCurve" file="data/lightcrv_GRB080916009.fits">
-      <parameter scale="1e+00" name="Normalization" min="0.0" max="1000.0" free="0" value="2.00000" />
-    </temporal>
   </source>
   <source name="Background" type="CTAIrfBackground" instrument="CTA">
     <spectrum type="PowerLaw">
