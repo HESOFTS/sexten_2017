@@ -1,4 +1,4 @@
--------------- README : scriptModel_variable.py  -------------------------------
+### README : scriptModel_variable.py 
 
 The script generates a .xml file to caraterise one or more GRBs models in the
 ctools standard starting from .txt file.
@@ -35,16 +35,17 @@ The order must be as follow:
 - 1 to execute test statistics, else 0 	
 
 - after the first 3 values you have 5 values that depends on the model:
-	Point Source  -------> RA   DEC  0  		0   		0
-	Radial Disk   -------> RA   DEC  Radius 	0 			0
-	Radial Gaussian -----> RA   DEC  Sigma 		0			0
-	Radial Shell  -------> RA   DEC  Radius		Width		0
-	Elliptical disk -----> RA   DEC  PA 		MinorRad	MajorRad
-	Elliptical Gaussian -> RA   DEC  PA 		MinorRad	MajorRad
-	Isotropic source ----> Cost 0	 0			0			0
-	Diffuse Map ---------> Pref 0	 0			0			0
-	Diffuse Map Cube ----> Norm 0	 0			0			0
-
+	|         Model          |  I   |  II  |   III    |   VI    |   V     |
+	| -------------------- | :---:  |------|----------|---------|---------|
+	| Point Source  	     | RA   | DEC  |0  		  |0   	    |0        |
+	| Radial Disk   	     | RA   | DEC  |Radius 	  |0 	    |0        |
+	| Radial Gaussian 	     | RA   | DEC  |Sigma     |0	    |0        |
+	| Radial Shell  	     | RA   | DEC  |Radius    |Width    |0        |
+	| Elliptical disk 	     | RA   | DEC  |PA 		  |MinorRad |MajorRad |
+	| Elliptical Gaussian 	 | RA   | DEC  |PA 		  |MinorRad |MajorRad |
+	| Isotropic source 	     | Cost | 0	   |0	      |0	    |0        |
+	| Diffuse Map 	         | Pref | 0	   |0	      |0	    |0        |
+	| Diffuse Map Cube 	     | Norm | 0	   |0	      |0	    |0        |
 
 
 EXAMPLE:
