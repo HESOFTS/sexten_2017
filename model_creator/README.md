@@ -1,7 +1,9 @@
 # README : scriptModel_variable.py 
 
-The script, written in python, generates a .xml file to caraterise one or more source or background models in the
-ctools standard starting from plain text file.
+The script, written in Python, generates a .xml file to caraterise one or more source or background models in the
+*ctools* standard starting from plain text file.
+
+The script needs **Python** and **GammaLib** library. GammaLib is freely available [here](http://gammalib.sourceforge.net/admin/index.html "Getting GammaLib page")
 
 To launch, in a bash terminal, write: `python scriptModel_variable.py flie_name`
 
