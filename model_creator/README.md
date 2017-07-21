@@ -123,7 +123,8 @@ The order must be as follow:
 *EXAMPLE:*
 `name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits`
  
-####Authors
+#### Authors
 
 @thomasgas :+1: :+1:  :stuck_out_tongue_closed_eyes:  :stuck_out_tongue_closed_eyes:
+
 @IlDordollano
