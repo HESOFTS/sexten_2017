@@ -29,7 +29,7 @@ one character (0 as standard).
 The order must be as follow:
 <ol>
 
-<li>  <b>Source name</b> (whatever you want) or background name (must start with BKG) 
+<li>  <b>Source name</b> (whatever you want).
  <p></p>
 </li>
 
@@ -44,11 +44,6 @@ The order must be as follow:
    <li>DiffIso</li>
    <li>DiffMap</li>
    <li>DiffMapCube</li>
-   <li>BkgGauss</li>
-   <li>Profile</li>
-   <li>Polynom</li>
-   <li>CTAIrf</li>
-   <li>CTACube</li>
    </ul>
     <p></p>
 </li>
@@ -119,11 +114,58 @@ The order must be as follow:
    </li>
 </ol> 	
 
-
+# Background
 *EXAMPLE:*
-`name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits`
+`BKGname  CTAIrf  0   0    0    0   0   0   PL    1.0    0.0    0.3*TeV`
+
+<ol>
+
+<li>  <b>Background name</b> (whatever you want) BUT it must start with BKG.
+ <p></p>
+</li>
+
+
+<li> <b>type of spatial model</b>. Must be one of the following: 
+   <ul>
+   <li>BkgGauss</li>
+   <li>Profile</li>
+   <li>Polynom</li>
+   <li>CTAIrf</li>
+   <li>CTACube</li>
+   </ul>
+    <p></p>
+</li>
+
+<li> Same as source case.
+ <p></p>
+</li>
+
+<li> Same as source case, but now you have to choose between:
+
+   |         Spatial model  |  I   |  II  |   III    |   VI    |   V     |
+   | ---------------------- |  --- |------|----------|---------|---------|
+   | BkgGauss               |Sigma | 0    |0         |0        |0        |
+   | Profile                |Width |Core  |Tail      |0        |0        |
+   | Polynom                | c1_c2_c3_c4...| 0  |0     |0        |0        |
+   | CTAIrf                 | 0    |0     |0         |0        |0        |
+   | CTACube                | 0    | 0    |0         |0        |0        |
+
+ <p></p>
+</li>
+
+<li> Same as source case.
+ <p></p>
+</li>
+<li> Same as source case.
+ <p></p>
+</li>
+
+<li> Same as source case.
+ <p></p>
+</li>
+</ol>
  
-#### Authors
+### Authors
 
 @thomasgas :+1: :+1:  :stuck_out_tongue_closed_eyes:  :stuck_out_tongue_closed_eyes:
 
