@@ -1,4 +1,4 @@
-### README : scriptModel_variable.py 
+# README : scriptModel_variable.py 
 
 I'm mentioning @thomasgas :+1: :+1:  :stuck_out_tongue_closed_eyes:  :stuck_out_tongue_closed_eyes:
 
@@ -16,14 +16,14 @@ If you need to use diffuse map model, save map file as "map.fits"
 If you need to use diffuse map cube, save map cube file as "map_cube.fits" 
 	in the same directory	
 
---------------------------------------------------------------------------------
+# How to setup the source file
 
 *One line* in the .txt file represent a source. There, all the values **must** be separeted
 by at least *one* space charater. If the value is not necessary, put anyway *at least*
 one character (0 as standard).
 
 *EXAMPLE:*
-`GRB_name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  data/GRB_name.out  2.0   data/lightcrv_GRB_name.fits `
+`name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits `
 
 The order must be as follow:
 <ol>
@@ -51,7 +51,7 @@ The order must be as follow:
 <li> 1 to execute <b>test statistics</b>, else 0 	 </li>
 
    <li>  
-    After the first 3 values you have 5 values that depends on the model. It is better
+    After the first 3 values there are 5 values that depend on the model's type. It is better
    to use a standard character (0) when the model have less than 5 values.
    
    |         Spatial model  |  I   |  II  |   III    |   VI    |   V     |
@@ -110,4 +110,5 @@ The order must be as follow:
 
 
 *EXAMPLE:*
-`GRB_name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  data/GRB_name.out  2.0   data/lightcrv_GRB_name.fits `
+`name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits`
+ `
