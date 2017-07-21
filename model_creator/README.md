@@ -1,8 +1,11 @@
 # README : scriptModel_variable.py 
 
-The script generates a .xml file to caraterise one or more source models in the
-ctools standard starting from .txt file.
+The script, written in Python, generates a .xml file to caraterise one or more source or background models in the
+*ctools* standard starting from plain text file.
 
+The script needs **Python** and **GammaLib** library. GammaLib is freely available [here](http://gammalib.sourceforge.net/admin/index.html "Getting GammaLib page")
+
+To launch, in a bash terminal, write: `python scriptModel_variable.py flie_name`
 
 [General references at this page](http://cta.irap.omp.eu/ctools "ctools Homepage" )
 
@@ -16,7 +19,7 @@ If you need to use diffuse map cube, save map cube file as "map_cube.fits"
 
 # How to setup the source file
 
-*One line* in the .txt file represent a source. There, all the values **must** be separeted
+*One line* in the plain text file represent a source. There, all the values **must** be separeted
 by at least *one* space charater. If the value is not necessary, put anyway *at least*
 one character (0 as standard).
 
@@ -26,7 +29,7 @@ one character (0 as standard).
 The order must be as follow:
 <ol>
 
-<li>  <b>Source name</b> (whatever you want) or background name (must start with BKG) 
+<li>  <b>Source name</b> (whatever you want).
  <p></p>
 </li>
 
@@ -41,11 +44,6 @@ The order must be as follow:
    <li>DiffIso</li>
    <li>DiffMap</li>
    <li>DiffMapCube</li>
-   <li>BkgGauss</li>
-   <li>Profile</li>
-   <li>Polynom</li>
-   <li>CTAIrf</li>
-   <li>CTACube</li>
    </ul>
     <p></p>
 </li>
@@ -116,11 +114,59 @@ The order must be as follow:
    </li>
 </ol> 	
 
-
+# Background
 *EXAMPLE:*
-`name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits`
+`BKGname  CTAIrf  0   0    0    0   0   0   PL    1.0    0.0    0.3*TeV`
+
+<ol>
+
+<li>  <b>Background name</b> (whatever you want) BUT it must start with BKG.
+ <p></p>
+</li>
+
+
+<li> <b>type of spatial model</b>. Must be one of the following: 
+   <ul>
+   <li>BkgGauss</li>
+   <li>Profile</li>
+   <li>Polynom</li>
+   <li>CTAIrf</li>
+   <li>CTACube</li>
+   </ul>
+    <p></p>
+</li>
+
+<li> Same as source case.
+ <p></p>
+</li>
+
+<li> Same as source case, but now you have to choose between:
+
+   |         Spatial model  |  I   |  II  |   III    |   VI    |   V     |
+   | ---------------------- |  --- |------|----------|---------|---------|
+   | BkgGauss               |Sigma | 0    |0         |0        |0        |
+   | Profile                |Width |Core  |Tail      |0        |0        |
+   | Polynom                | c1_c2_c3_c4...| 0  |0     |0        |0        |
+   | CTAIrf                 | 0    |0     |0         |0        |0        |
+   | CTACube                | 0    | 0    |0         |0        |0        |
+
+ <p></p>
+</li>
+
+<li> Same as source case.
+ <p></p>
+</li>
+<li> Same as source case.
+ <p></p>
+</li>
+
+<li> Same as source case.
+ <p></p>
+</li>
+</ol>
  
-####Authors
+### Authors
 
 @thomasgas :+1: :+1:  :stuck_out_tongue_closed_eyes:  :stuck_out_tongue_closed_eyes:
+
 @IlDordollano
