@@ -1,6 +1,6 @@
 # README : scriptModel_variable.py 
 
-The script generates a .xml file to caraterise one or more source models in the
+The script generates a .xml file to caraterise one or more source or background models in the
 ctools standard starting from plain text file.
 
 
