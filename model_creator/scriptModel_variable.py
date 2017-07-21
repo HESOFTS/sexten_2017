@@ -72,7 +72,7 @@ def sourceDef(info):
 		source_txt = source_txt + ' tscalc="1"'
 
 	source_branch = gammalib.GXmlElement(source_txt)           
-	if (srcname == "BKG"):
+	if (srcname[0:2] == "BKG"):
 		print("-----------background-----------")
 		print('The source ' + srcname + ' is a ' + modelname)    
 
@@ -87,9 +87,10 @@ def sourceDef(info):
 		spectral = specFun(info[8:])        #string        
 		source_branch.append(spectral)    
 
-		#create SPATIAL model    
-		spatial = spatFun(info[1:])
-		source_branch.append(spatial)
+		if (modelname != 'CTAIrf' and modelname != 'CTACube'):
+			#create SPATIAL model    
+			spatial = spatFun(info[1:])
+			source_branch.append(spatial)
 
 		#check if the last item is a file fits for the TEMPORAL evolution 
 		if (info[-1][-4:] == 'fits'):
@@ -122,7 +123,7 @@ def spatFun(inSpat):
 	dec_text='parameter scale="1.0"  name="DEC"  min="-90"   max="90"  free="0" value="'+dec+'"'
 
 	if (SpatModel == 'Point'):
-		spatial = gammalib.GXmlElement('spatialModel type="SkyDirFunction"')
+		spatial = gammalib.GXmlElement('spatialModel type="SkyDirFunction"') #compatibility with Fermi/LAT
 		spatial.append(gammalib.GXmlElement(ra_text))
 		spatial.append(gammalib.GXmlElement(dec_text))
 
@@ -197,8 +198,39 @@ def spatFun(inSpat):
 		spatial = gammalib.GXmlElement('spatialModel type="MapCubeFunction" file="map_cube.fits"')
 		value = inSpat[4]
 		value_text = 'name="Normalization" scale="1" min="0.001"  max="1000.0" free="0" value="' + value +'"'
-		spatial.append(gammalib.GXmlElement(value_text))    
+		spatial.append(gammalib.GXmlElement(value_text))   
 
+
+		#---------- Here starts background spatial models
+
+	elif (SpatModel == 'BkgGauss'):
+		spatial = gammalib.GXmlElement('radialModel type="Gaussian"')
+		sig = inSpat[2]
+		sig_text = 'name="Sigma" scale="1.0"  min="0.01" max="10.0"  free="0"   value="' + sig +'"'
+		spatial.append(gammalib.GXmlElement(sig_text))
+			 
+	elif (SpatModel == 'Profile'):
+		spatial = gammalib.GXmlElement('radialModel type="Profile"')
+		width = inSpat[2]
+		core = inSpat[3]
+		tail = inSpat[4]
+		width_text = 'name="Width" scale="1.0"  min="0.01" max="10000.0"  free="0"   value="' + width +'"'
+		core_text = 'name="Core" scale="1.0"  min="0.01" max="10000.0"  free="0"   value="' + core +'"'
+		tail_text = 'name="Tail" scale="1.0"  min="0.01" max="10000.0"  free="0"   value="' + tail +'"'
+
+		spatial.append(gammalib.GXmlElement(width_text))
+		spatial.append(gammalib.GXmlElement(core_text))
+		spatial.append(gammalib.GXmlElement(tail_text))
+
+	elif (SpatModel == 'Polynom'):
+		spatial = gammalib.GXmlElement('radialModel type="Polynom"')
+		coef = inSpat[2]
+		coef = coeff.split("_")
+		for i in range(0,len(coef)):
+			name_coef = 'Coeff' + str(i)
+			coef_text = 'name="' + name_coef +'" scale="1.0" value="'+coef[i]+'"  min="-10.0" max="10.0" free="0"'
+			spatial.append(gammalib.GXmlElement(coef_text))
+	
 	else:
 		print("Wrong input model")
 		sys.exit()
@@ -472,4 +504,6 @@ if __name__ == '__main__':
 
 	#print(models)
 	# Save the XML document into a file
-	xml.save(sys.argv[1][:-4]+'.xml')
+	name_fil = sys.argv[1].split('.')
+
+	xml.save(name_fil[0]+'.xml')
