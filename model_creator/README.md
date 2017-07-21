@@ -1,7 +1,7 @@
 # README : scriptModel_variable.py 
 
 The script generates a .xml file to caraterise one or more source models in the
-ctools standard starting from .txt file.
+ctools standard starting from plain text file.
 
 
 [General references at this page](http://cta.irap.omp.eu/ctools "ctools Homepage" )
@@ -16,7 +16,7 @@ If you need to use diffuse map cube, save map cube file as "map_cube.fits"
 
 # How to setup the source file
 
-*One line* in the .txt file represent a source. There, all the values **must** be separeted
+*One line* in the plain text file represent a source. There, all the values **must** be separeted
 by at least *one* space charater. If the value is not necessary, put anyway *at least*
 one character (0 as standard).
 
