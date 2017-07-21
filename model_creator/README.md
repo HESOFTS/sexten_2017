@@ -1,8 +1,9 @@
 # README : scriptModel_variable.py 
 
-The script generates a .xml file to caraterise one or more source or background models in the
+The script, written in python, generates a .xml file to caraterise one or more source or background models in the
 ctools standard starting from plain text file.
 
+To launch, in a bash terminal, write: `python scriptModel_variable.py flie_name`
 
 [General references at this page](http://cta.irap.omp.eu/ctools "ctools Homepage" )
 
