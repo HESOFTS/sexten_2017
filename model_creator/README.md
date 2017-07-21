@@ -1,6 +1,4 @@
-### README : scriptModel_variable.py 
-
-I'm mentioning @thomasgas :+1: :+1:  :stuck_out_tongue_closed_eyes:  :stuck_out_tongue_closed_eyes:
+# README : scriptModel_variable.py 
 
 The script generates a .xml file to caraterise one or more source models in the
 ctools standard starting from .txt file.
@@ -16,19 +14,21 @@ If you need to use diffuse map model, save map file as "map.fits"
 If you need to use diffuse map cube, save map cube file as "map_cube.fits" 
 	in the same directory	
 
---------------------------------------------------------------------------------
+# How to setup the source file
 
 *One line* in the .txt file represent a source. There, all the values **must** be separeted
 by at least *one* space charater. If the value is not necessary, put anyway *at least*
 one character (0 as standard).
 
 *EXAMPLE:*
-`GRB_name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  data/GRB_name.out  2.0   data/lightcrv_GRB_name.fits `
+`name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits `
 
 The order must be as follow:
 <ol>
 
-<li>  <b>Source name</b> (whatever you want) or background name (must start with BKG) </li>
+<li>  <b>Source name</b> (whatever you want) or background name (must start with BKG) 
+ <p></p>
+</li>
 
 <li> <b>type of spatial model</b>. Must be one of the following: 
    <ul>
@@ -47,11 +47,14 @@ The order must be as follow:
    <li>CTAIrf</li>
    <li>CTACube</li>
    </ul>
+    <p></p>
 </li>
-<li> 1 to execute <b>test statistics</b>, else 0 	 </li>
+<li> 1 to execute <b>test statistics</b>, else 0 	 
+ <p></p>
+</li>
 
    <li>  
-    After the first 3 values you have 5 values that depends on the model. It is better
+    After the first 3 values there are 5 values that depend on the model's type. It is better
    to use a standard character (0) when the model have less than 5 values.
    
    |         Spatial model  |  I   |  II  |   III    |   VI    |   V     |
@@ -65,6 +68,7 @@ The order must be as follow:
    | Isotropic source       | Cost | 0    |0         |0        |0        |
    | Diffuse Map            | Pref | 0    |0         |0        |0        |
    | Diffuse Map Cube       | Norm | 0    |0         |0        |0        |
+   
    
    </li>
 <li> 
@@ -82,6 +86,7 @@ The order must be as follow:
       <li>LOGPAR</li>
       <li>GAUSS</li>
    </ul>
+    <p></p>
 </li>
    <li> 
    You must insert the right number of values, depending on the function model. Energies
@@ -99,15 +104,23 @@ The order must be as follow:
 | Super exponentially cut-off power law | Prefactor     | Index1   | Index2      | Pivot Energy  | Cutoff Energy |     |
 | Log parabola                          | Prefactor     | Index    | Curvature   | Pivot Energy  |              |     |
 | Gaussian function                     | Normalization | Mean     | Sigma       |              |              |     |
-
+ 
+ <p> </p>
+ 
    </li>
 
    <li>
    <i> NOT MANDATORY:</i> You can put here the normalization and the name or directory of a .fits file for
    temporal evolution. <i><small>EXAMPLE: 20.4   temp_ev.fits</i></small>
+    <p></p>
    </li>
 </ol> 	
 
 
 *EXAMPLE:*
-`GRB_name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  data/GRB_name.out  2.0   data/lightcrv_GRB_name.fits `
+`name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits`
+ 
+####Authors
+
+@thomasgas :+1: :+1:  :stuck_out_tongue_closed_eyes:  :stuck_out_tongue_closed_eyes:
+@IlDordollano
