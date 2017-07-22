@@ -132,7 +132,7 @@ def spatFun(inSpat):
 		spatial.append(ra_text)
 		spatial.append(dec_text)
 		radius = inSpat[4]
-		radius_text = 'name="Radius" scale="1.0"  min="0.01" max="10"  free="0"   value="' + radius +'"'
+		radius_text = 'parameter name="Radius" scale="1.0"  min="0.01" max="10"  free="0"   value="' + radius +'"'
 		spatial.append(radius_text)
 
 	elif (SpatModel == 'RadGauss'):
@@ -140,7 +140,7 @@ def spatFun(inSpat):
 		spatial.append(ra_text)
 		spatial.append(dec_text)
 		sig = inSpat[4]
-		sig_text = 'name="Sigma" scale="1.0"  min="0.01" max="10"  free="0"   value="' + sig +'"'
+		sig_text = 'parameter name="Sigma" scale="1.0"  min="0.01" max="10"  free="0"   value="' + sig +'"'
 		spatial.append(sig_text)
 
 	elif (SpatModel == 'RadShell'):
@@ -149,8 +149,8 @@ def spatFun(inSpat):
 		spatial.append(dec_text)
 		radius = inSpat[4]
 		width  = inSpat[5]
-		radius_text = 'name="Radius" scale="1.0"  min="0.01" max="10"  free="0"  value="' + radius +'"'
-		width_text  = 'name="Width"  scale="1.0"  min="0.01" max="10"  free="0"  value="' + width + '"'
+		radius_text = 'parameter name="Radius" scale="1.0"  min="0.01" max="10"  free="0"  value="' + radius +'"'
+		width_text  = 'parameter name="Width"  scale="1.0"  min="0.01" max="10"  free="0"  value="' + width + '"'
 		spatial.append(radius_text)
 		spatial.append(width_text)
 
@@ -161,9 +161,9 @@ def spatFun(inSpat):
 		PA = inSpat[4]
 		minr  = inSpat[5]
 		maxr  = inSpat[6]
-		PA_text   = 'name="PA"           scale="1.0"  min="-360"   max="360" free="0"  value="' + PA +'"'
-		minr_text = 'name="MinorRadius"  scale="1.0"  min="0.001"  max="10"  free="0"  value="' + minr + '"'
-		maxr_text = 'name="MajorRadius"  scale="1.0"  min="0.001"  max="10"  free="0"  value="' + maxr + '"'
+		PA_text   = 'parameter name="PA"   scale="1.0"  min="-360"   max="360" free="0"  value="' + PA +'"'
+		minr_text = 'parameter name="MinorRadius"  scale="1.0"  min="0.001"  max="10"  free="0"  value="' + minr + '"'
+		maxr_text = 'parameter name="MajorRadius"  scale="1.0"  min="0.001"  max="10"  free="0"  value="' + maxr + '"'
 		spatial.append(PA_text)
 		spatial.append(minr_text)
 		spatial.append(maxr_text)
@@ -175,9 +175,9 @@ def spatFun(inSpat):
 		PA = inSpat[4]
 		minr  = inSpat[5]
 		maxr  = inSpat[6]
-		PA_text   = 'name="PA"           scale="1.0"  min="-360"   max="360" free="0"  value="' + PA +'"'
-		minr_text = 'name="MinorRadius"  scale="1.0"  min="0.001"  max="10"  free="0"  value="' + minr + '"'
-		maxr_text = 'name="MajorRadius"  scale="1.0"  min="0.001"  max="10"  free="0"  value="' + maxr + '"'
+		PA_text   = 'parameter name="PA"           scale="1.0"  min="-360"   max="360" free="0"  value="' + PA +'"'
+		minr_text = 'parameter name="MinorRadius"  scale="1.0"  min="0.001"  max="10"  free="0"  value="' + minr + '"'
+		maxr_text = 'parameter name="MajorRadius"  scale="1.0"  min="0.001"  max="10"  free="0"  value="' + maxr + '"'
 		spatial.append(PA_text)
 		spatial.append(minr_text)
 		spatial.append(maxr_text)
@@ -185,19 +185,19 @@ def spatFun(inSpat):
 	elif (SpatModel == 'DiffIso'):
 		spatial = gammalib.GXmlElement('spatialModel type="DiffuseSource"')
 		value = inSpat[4]
-		value_text = 'name="Value" scale="1" min="1"  max="1" free="0" value="' + value +'"'        
+		value_text = 'parameter name="Value" scale="1" min="1"  max="1" free="0" value="' + value +'"'        
 		spatial.append(value_text)
 
 	elif (SpatModel == 'DiffMap'):
 		spatial = gammalib.GXmlElement('spatialModel type="DiffuseSource" file="map.fits"')
 		value = inSpat[4]
-		value_text = 'name="Prefactor" scale="1" min="0.001"  max="1000.0" free="0" value="' + value +'"'
+		value_text = 'parameter name="Prefactor" scale="1" min="0.001"  max="1000.0" free="0" value="' + value +'"'
 		spatial.append(value_text)
 
 	elif (SpatModel == 'DiffMapCube'):
 		spatial = gammalib.GXmlElement('spatialModel type="MapCubeFunction" file="map_cube.fits"')
 		value = inSpat[4]
-		value_text = 'name="Normalization" scale="1" min="0.001"  max="1000.0" free="0" value="' + value +'"'
+		value_text = 'parameter name="Normalization" scale="1" min="0.001"  max="1000.0" free="0" value="' + value +'"'
 		spatial.append(value_text)   
 
 
@@ -206,7 +206,7 @@ def spatFun(inSpat):
 	elif (SpatModel == 'BkgGauss'):
 		spatial = gammalib.GXmlElement('radialModel type="Gaussian"')
 		sig = inSpat[2]
-		sig_text = 'name="Sigma" scale="1.0"  min="0.01" max="10.0"  free="0"   value="' + sig +'"'
+		sig_text = 'parameter name="Sigma" scale="1.0"  min="0.01" max="10.0"  free="0"   value="' + sig +'"'
 		spatial.append(sig_text)
 			 
 	elif (SpatModel == 'Profile'):
@@ -214,9 +214,9 @@ def spatFun(inSpat):
 		width = inSpat[2]
 		core = inSpat[3]
 		tail = inSpat[4]
-		width_text = 'name="Width" scale="1.0"  min="0.01" max="10000.0"  free="0"   value="' + width +'"'
-		core_text = 'name="Core" scale="1.0"  min="0.01" max="10000.0"  free="0"   value="' + core +'"'
-		tail_text = 'name="Tail" scale="1.0"  min="0.01" max="10000.0"  free="0"   value="' + tail +'"'
+		width_text = 'parameter name="Width" scale="1.0"  min="0.01" max="10000.0"  free="0"   value="' + width +'"'
+		core_text = 'parameter name="Core" scale="1.0"  min="0.01" max="10000.0"  free="0"   value="' + core +'"'
+		tail_text = 'parameter name="Tail" scale="1.0"  min="0.01" max="10000.0"  free="0"   value="' + tail +'"'
 
 		spatial.append(width_text)
 		spatial.append(core_text)
@@ -228,7 +228,7 @@ def spatFun(inSpat):
 		coef = coef.split("_")
 		for i in range(0,len(coef)):
 			name_coef = 'Coeff' + str(i)
-			coef_text = 'name="' + name_coef +'" scale="1.0" value="'+coef[i]+'"  min="-10.0" max="10.0" free="0"'
+			coef_text = 'parameter name="' + name_coef +'" scale="1.0" value="'+coef[i]+'"  min="-10.0" max="10.0" free="0"'
 			spatial.append(coef_text)
 	
 	else:
