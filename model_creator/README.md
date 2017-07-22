@@ -5,7 +5,8 @@ The script, written in Python, generates a .xml file to caraterise one or more s
 
 The script needs **Python** and **GammaLib** library. GammaLib is freely available [here](http://gammalib.sourceforge.net/admin/index.html "Getting GammaLib page")
 
-To launch, in a bash terminal, write: `python scriptModel_variable.py flie_name`
+To launch, in a bash terminal, write: `python scriptModel_variable.py file_name`
+If you add another variable, whatever you write, you get verbose mode on: `python scriptModel_variable.py file_name verb`
 
 [General references at this page](http://cta.irap.omp.eu/ctools "ctools Homepage" )
 
