@@ -42,7 +42,7 @@ def sourceDef(info):
 	srcname = info[0]
 	modelname = info[1]     #extract model name for SOURCE
 	ts = info[2]
-	#print('--------------------------------')
+	#if ver != '': print('--------------------------------')
 
 	
 	pointList = ['Point']
@@ -73,15 +73,15 @@ def sourceDef(info):
 
 	source_branch = gammalib.GXmlElement(source_txt)           
 	if (srcname[0:2] == "BKG"):
-		print("-----------background-----------")
-		print('The source ' + srcname + ' is a ' + modelname)    
+		if ver != '': print("-----------background-----------")
+		if ver != '': print('The source ' + srcname + ' is a ' + modelname)    
 
 		#create SPECTRAL model
 		spectral = specFun(info[8:])        #string        
 		source_branch.append(spectral)    
 	else:       
-		print("------source: " + srcname + "-------")
-		print('The source ' + srcname + ' is a ' + modelname)    
+		if ver != '': print("------source: " + srcname + "-------")
+		if ver != '': print('The source ' + srcname + ' is a ' + modelname)    
 
 		#create SPECTRAL model
 		spectral = specFun(info[8:])        #string        
@@ -99,10 +99,10 @@ def sourceDef(info):
 			source_branch.append(temporal)
 
 	if (ts == "1"):
-		print("TS calculation: yes")
+		if ver != '': print("TS calculation: yes")
 		#source_txt=source_txt+'  tscalc="1"'
 	else:
-		print("TS calculation: no")
+		if ver != '': print("TS calculation: no")
 
 	return source_branch
 
@@ -225,7 +225,7 @@ def spatFun(inSpat):
 	elif (SpatModel == 'Polynom'):
 		spatial = gammalib.GXmlElement('radialModel type="Polynom"')
 		coef = inSpat[2]
-		coef = coeff.split("_")
+		coef = coef.split("_")
 		for i in range(0,len(coef)):
 			name_coef = 'Coeff' + str(i)
 			coef_text = 'name="' + name_coef +'" scale="1.0" value="'+coef[i]+'"  min="-10.0" max="10.0" free="0"'
@@ -247,7 +247,7 @@ def specFun(inSpec):
 	
 	if (SpecModel == 'CONST'):
 		#CONSTANT MODEL
-		print('Spectral model: ' + SpecModel)
+		if ver != '': print('Spectral model: ' + SpecModel)
 		norm = float(inSpec[1])        
 		norm_text='parameter scale="'+numdiv(pref)[1]+'"  name="Normalization"  min="1e-7"   max="1000"  free="1" value="'+numdiv(pref)[0]+'"'
 		spectral = gammalib.GXmlElement('spectrum type="ConstantValue"')                
@@ -255,7 +255,7 @@ def specFun(inSpec):
 
 	elif (SpecModel == 'FUNC'):
 		# FILE FUNCTION
-		print('Spectral model: ' + SpecModel)
+		if ver != '': print('Spectral model: ' + SpecModel)
 		norm = float(inSpec[1])
 		filepath = inSpec[2]
 		norm_text='parameter scale="'+numdiv(norm)[1]+'"  name="Normalization"  min="1e-7"   max="1000"  free="1" value="'+numdiv(norm)[0]+'"'
@@ -263,28 +263,28 @@ def specFun(inSpec):
 		spectral.append(norm_text)
 	
 	elif (SpecModel == 'NODE'):
-		print(SpecModel)
+		if ver != '': print(SpecModel)
 		n_param = int(inSpec[1]) #number of parameters
 
 		if n_param % 2 != 0:
-			print("Wrong number of parameters in NODE SPECTRAL MODEL")
+			if ver != '': print("Wrong number of parameters in NODE SPECTRAL MODEL")
 			sys.exit()            
 
 		spectral = gammalib.GXmlElement('spectrum type="NodeFunction"')
 
 		values = []
 		for n in range(2, n_param + 2, 2):
-			print(inSpec[n])
-			print(type(inSpec[n]))
+			if ver != '': print(inSpec[n])
+			if ver != '': print(type(inSpec[n]))
 			values.append(EnConv(inSpec[n], "MeV")) #energy
 			values.append(inSpec[n+1])				#intensity
 
 		val_x = values[0::2] #select only even characters
 		val_y = values[1::2] #select only odd characters
-		print(val_x)
+		if ver != '': print(val_x)
 		points = [(val_x[i],val_y[i]) for i in range(0, len(val_x))] #making list of points
 		pointss = sorted(points, key=lambda k: k[1])  #sort points by energy
-		print(pointss)
+		if ver != '': print(pointss)
 		for n in range(0, len(pointss)):	
 			energy_text = 'parameter scale="'+str(pointss[n][0][1])+'"   name="Energy"    min="0.1"   max="1.0e20" free="0"  value="'+str(pointss[n][0][0])+'"'
 			intens_text = 'parameter scale="1e-07" name="Intensity" min="1e-07" max="1000.0" free="1" value="'+pointss[n][1]+'"'
@@ -294,7 +294,7 @@ def specFun(inSpec):
 
 	elif (SpecModel == 'PL'):
 		#POWER LAW MODEL
-		print('Spectral model: '+SpecModel)
+		if ver != '': print('Spectral model: '+SpecModel)
 		pref = float(inSpec[1])
 		index = inSpec[2]
 		PivotEnergy = EnConv(inSpec[3], "MeV") #convert the energy in MeV
@@ -310,12 +310,12 @@ def specFun(inSpec):
 
 	elif (SpecModel == 'PL2'):
 		#POWER LAW 2 MODEL
-		print('Spectral model: '+SpecModel)
+		if ver != '': print('Spectral model: '+SpecModel)
 		pref = float(inSpec[1])
 		index = inSpec[2]
 		MinEnergy = EnConv(inSpec[3], "MeV") #convert the energy in MeV
 		MaxEnergy = EnConv(inSpec[4], "MeV") #convert the energy in MeV
-		print(MaxEnergy)
+		if ver != '': print(MaxEnergy)
 
 		pref_text='parameter scale="'+numdiv(pref)[1]+'"  name="Integral"  min="1e-7"   max="1000"  free="1" value="'+numdiv(pref)[0]+'"'
 		index_text='parameter scale="-1.0"  name="Index"  min="0.0"   max="+10.0"  free="1" value="'+index+'"'
@@ -330,7 +330,7 @@ def specFun(inSpec):
 
 	elif (SpecModel == 'BRPL'):
 		# BrokenPowerLaw MODEL
-		print('Spectral model: ' + SpecModel)
+		if ver != '': print('Spectral model: ' + SpecModel)
 		pref = float(inSpec[1])
 		index1 = inSpec[2]                      #must be negative
 		CutEnergy = EnConv(inSpec[3],"GeV")     #convert the energy in GeV
@@ -349,7 +349,7 @@ def specFun(inSpec):
 
 	elif (SpecModel == 'EXPL'):
 		#Exponential CUT OFF POWER LAW MODEL
-		print('Spectral model: ' + SpecModel)
+		if ver != '': print('Spectral model: ' + SpecModel)
 		pref = float(inSpec[1])
 		index = inSpec[2]
 		PivotEnergy = EnConv(inSpec[3], "MeV") #convert the energy in MeV
@@ -368,7 +368,7 @@ def specFun(inSpec):
 
 	elif (SpecModel == 'SEPL'):
 		#SUPER EXPONENTIALY CUY-OFF POWER LAW
-		print('Spectral model: ' + SpecModel)
+		if ver != '': print('Spectral model: ' + SpecModel)
 		pref = float(inSpec[1])
 		index1 = inSpec[2]
 		index2 = inSpec[3]
@@ -390,7 +390,7 @@ def specFun(inSpec):
 		spectral.append(piv_energy_text)
 
 	elif (SpecModel == 'LOGPAR'):
-		print('Spectral model: ' + SpecModel)
+		if ver != '': print('Spectral model: ' + SpecModel)
 		#LOG PARABOLA
 		pref = float(inSpec[1])
 		index = inSpec[2]
@@ -410,7 +410,7 @@ def specFun(inSpec):
 		spectral.append(E_scale_text)
 
 	elif (SpecModel == 'GAUSS'):
-		print('Spectral model: ' + SpecModel)
+		if ver != '': print('Spectral model: ' + SpecModel)
 		#GAUSSIAN FUNCTION
 		norm = float(inSpec[1])
 		mean = EnConv(inSpec[2],"GeV")
@@ -470,7 +470,7 @@ def show_xml(xml):
 	xml.write(url)
 	
 	# Print URL buffer
-	print(url.string())
+	if ver != '': print(url.string())
 	
 	# Return
 	return
@@ -489,15 +489,27 @@ if __name__ == '__main__':
 	# main branch    
 	sourcelibrary = xml.append('source_library title="source library"')
 
-	# read first line
-	#inputs = f.readline()
-	#inputs = inputs.split()
+	# if argv has verbose attribute, set verbose on
+
+	global ver
+
+	if len(sys.argv) == 3: 
+		ver = 'yes'
+	else: 
+		ver = ''
+
+
+
+
+	# read lines
 
 	with open(nomefile) as openfile:
 		for line in openfile:
 			inputs = line.split()
-			sourcelibrary.append(sourceDef(inputs))
-	print('--------------------------------')
+			if len(inputs) != 0:
+				if line[0] != '#':
+					sourcelibrary.append(sourceDef(inputs))
+	if ver != '': print('--------------------------------')
 	
 	#SHOW XML FILE    
 	show_xml(xml)
