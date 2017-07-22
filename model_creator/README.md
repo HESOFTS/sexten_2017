@@ -21,10 +21,10 @@ If you need to use diffuse map cube, save map cube file as "map_cube.fits"
 
 *One line* in the plain text file represent a source. There, all the values **must** be separeted
 by at least *one* space charater. If the value is not necessary, put anyway *at least*
-one character (0 as standard).
+one character (0 as standard). Comments need to start with `#`.
 
 *EXAMPLE:*
-`name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits `
+`name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits`
 
 The order must be as follow:
 <ol>
