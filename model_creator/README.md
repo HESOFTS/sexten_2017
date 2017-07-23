@@ -1,11 +1,14 @@
 # README : scriptModel_variable.py 
 
-The script, written in Python, generates a .xml file to caraterise one or more source or background models in the
+The script, written in Python, generates a .xml file to characterize one or more source or background models in the
 *ctools* standard starting from plain text file.
 
 The script needs **Python** and **GammaLib** library. GammaLib is freely available [here](http://gammalib.sourceforge.net/admin/index.html "Getting GammaLib page")
 
-To launch, in a bash terminal, write: `python scriptModel_variable.py flie_name`
+To launch, in a bash terminal, write: `python scriptModel_variable.py file_name`
+If you add another variable, whatever you write, you get verbose mode on: `python scriptModel_variable.py file_name verb` <br>
+
+In the model\_creator directory of this repository, an example of the plain text file is called GRB080916009. See below for more info.  
 
 [General references at this page](http://cta.irap.omp.eu/ctools "ctools Homepage" )
 
@@ -16,17 +19,21 @@ If you need to use diffuse map model, save map file as "map.fits"
 
 If you need to use diffuse map cube, save map cube file as "map_cube.fits" 
 	in the same directory	
+	
+The **free parameter** is set as reported on ctools page, but you should check those numbers on xml file and change it if you want differents free parameters.
+	
+ps: this script is *far from perfect*. Keep it as it is, double check the resulting xml file, and if you get some errors take a look at the python source code.
 
 # How to setup the source file
 
-*One line* in the plain text file represent a source. There, all the values **must** be separeted
-by at least *one* space charater. If the value is not necessary, put anyway *at least*
-one character (0 as standard).
+*One line* in the plain text file represents a source. There, all the values **must** be separated
+by at least *one* space character. If the value is not necessary, put anyway *at least*
+one character (0 as standard). Comments need to start with `#`.
 
 *EXAMPLE:*
-`name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits `
+`name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits`
 
-The order must be as follow:
+The order must be as follows:
 <ol>
 
 <li>  <b>Source name</b> (whatever you want).
@@ -71,7 +78,7 @@ The order must be as follow:
    </li>
 <li> 
 <b>Type of spectral model </b><small><i>(This is after 5 strings, then position 9) </i></small>.
-   Must be on of the following:
+   Must be one of the following:
    <ul>
       <li>CONST</li>
       <li>FUNC</li>

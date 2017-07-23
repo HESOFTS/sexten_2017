@@ -12,6 +12,18 @@ During the school, there will be few hands-on on softwares used in High Energy a
 2. ctools ([http://cta.irap.omp.eu/ctools/](http://cta.irap.omp.eu/ctools/)), the software currently being developed for the analysis of the future Cherenkov observatory CTA
 3. gammapy ([http://docs.gammapy.org/en/latest/](http://docs.gammapy.org/en/latest/)), an alternative of ctools but can be used for the analysis of general gamma-ray astronomy data
 
+## Settings for the tutorials
+Since the Fermi Science Tools were not compiled from source but installed as a binary, the built-in python of the Fermi Science Tools is incompatible with the python installed by default in the system, which was used to compiled the *ctools* and *gammalib*. So, in order not to have conflicts when working with the Fermi Science Tools and with the *ctools*, there are two bash scripts which set the proper environment variables to use one or the other software. <br>
+That said, open the terminal and type ($ is the command prompt) in the home directory:
+
+      $ source fermitools_heasoft.sh
+
+to use the Fermi Science Tools, or:
+
+      $ source gammalib_ctools.sh
+
+to use the *ctools*.
+
 ## Programming knowledge
 For some of the hands-on we will use Python and some Python modules widely used in Astrophysics and general data analysis e.g. numpy, Astropy, matplotlib. Here below you can find some links if you want to get comfortable using these tools:
 
