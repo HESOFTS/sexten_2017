@@ -17,6 +17,10 @@ If you need to use diffuse map model, save map file as "map.fits"
 
 If you need to use diffuse map cube, save map cube file as "map_cube.fits" 
 	in the same directory	
+	
+The **free parameter** is set as reported on ctools page, but you should check those numbers on xml file and change it if you want differents free parameters.
+	
+ps: this script is *far from perfect*. Keep as it is, double check the resulting xml file, and if you get some errors take a look at the python source code.
 
 # How to setup the source file
 
