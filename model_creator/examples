@@ -1,0 +1,15 @@
+#standard crab
+first    Point  0 83.6331 22.0145 0 0 0 PL 5.7e-16 2.48 0.3*TeV
+BKG_crab CTAIrf 0 0 0 0 0 0             PL 1.0 0.0 0.3*TeV
+
+#crab_shell
+c_shell RadShell 1 83.6331 22.0145 0.30 0.10 0 PL 5.7e-16 2.48 0.3*TeV
+
+#crab_gauss
+c_gauss RadGauss 1 83.6331 22.0145 0.20 0 	0 PL 5.7e-16 2.48 0.3*TeV
+
+#crab_disk
+c_disk RadDisk 1 83.6331 22.0145 0.45 0 0 PL 5.7e-16 2.48 0.3*TeV
+
+#crab polinomy MAGIC Crab (Albert et al. 2008, ApJ, 674, 1037)
+BKGpoly Polynom 0 1.0_-0.123917_0.9751791_-3.0584577_2.9089535_-1.3535372_0.3413752_-0.0449642_0.0024321 0 0 0 0 PL 61.8e-6 1.85 1.0*TeV
