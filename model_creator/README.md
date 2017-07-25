@@ -1,14 +1,12 @@
 # README : scriptModel_variable.py 
 
-The script, written in Python, generates a .xml file to characterize one or more source or background models in the
-*ctools* standard starting from plain text file.
+The script, written in Python, generates a .xml file to characterize one or more sources or background models in the
+*ctools* standard, starting from plain text file.
 
-The script needs **Python** and **GammaLib** library. GammaLib is freely available [here](http://gammalib.sourceforge.net/admin/index.html "Getting GammaLib page")
+The **Python** script need only the **GammaLib** library, which can be downloaded [here](http://gammalib.sourceforge.net/admin/index.html "Getting GammaLib page")
 
-To launch, in a bash terminal, write: `python scriptModel_variable.py file_name`
-If you add another variable, whatever you write, you get verbose mode on: `python scriptModel_variable.py file_name verb` <br>
-
-In the model\_creator directory of this repository, an example of the plain text file is called GRB080916009. See below for more info.  
+The script can be launched from terminal typing: `$ python scriptModel_variable.py file_name`, where $ denotes the command prompt.
+If you add another variable, whatever you write, you get verbose mode on: `python scriptModel_variable.py file_name verb` <br>.
 
 [General references at this page](http://cta.irap.omp.eu/ctools "ctools Homepage" )
 
@@ -22,25 +20,25 @@ If you need to use diffuse map cube, save map cube file as "map_cube.fits"
 	
 The **free parameter** is set as reported on ctools page, but you should check those numbers on xml file and change it if you want differents free parameters.
 	
-ps: this script is *far from perfect*. Keep it as it is, double check the resulting xml file, and if you get some errors take a look at the python source code.
+**NOTE**: this script is *far from perfect*. Keep it as it is, double check the resulting xml file, and if you get some errors write to thomas.gasparetto@ts.infn.it.
 
 # How to setup the source file
 
-*One line* in the plain text file represents a source. There, all the values **must** be separated
+*Each line* in the plain text file represents a source. There, all the values **must** be separated
 by at least *one* space character. If the value is not necessary, put anyway *at least*
-one character (0 as standard). Comments need to start with `#`.
+one character (we use 0 as standard and we advise you to do so). Comments need to start with `#`.
 
 *EXAMPLE:*
-`name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits`
+`src_name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits`
 
 The order must be as follows:
 <ol>
 
-<li>  <b>Source name</b> (whatever you want).
+<li><b>Source name</b> (without spaces in the name, but the underscore can be used).
  <p></p>
 </li>
 
-<li> <b>type of spatial model</b>. Must be one of the following: 
+<li><b>Spatial models</b> You must be one of the following: 
    <ul>
    <li>Point</li>
    <li>RanDisk</li>
@@ -54,13 +52,15 @@ The order must be as follows:
    </ul>
     <p></p>
 </li>
-<li> 1 to execute <b>test statistics</b>, else 0 	 
+<li> The third element in the list must be an integer. If it is equal to `1`, then during the computation of the likelihood (via `ctlike`), the [Test Statistics](https://en.wikipedia.org/wiki/Test_statistic) value will be computed. The square root of the TS parameter gives the significance of the detection of the source: the higher is the value, the better the source has been extracted from the background.
+If you don't want to compute TS, just put the value equal to `0` in the input text file.
+
  <p></p>
 </li>
 
-   <li>  
-    After the first 3 values there are 5 values that depend on the model's type. It is better
-   to use a standard character (0) when the model have less than 5 values.
+   <li>
+    After the first 3 values there are 5 values that depend on the spatial model.. It is better
+   to use a standard character (0) when the model have less than 5 values, in order to fill the missing entries..
    
    |         Spatial model  |  I   |  II  |   III    |   VI    |   V     |
    | ---------------------- |  --- |------|----------|---------|---------|
@@ -73,11 +73,10 @@ The order must be as follows:
    | Isotropic source       | Cost | 0    |0         |0        |0        |
    | Diffuse Map            | Pref | 0    |0         |0        |0        |
    | Diffuse Map Cube       | Norm | 0    |0         |0        |0        |
-   
-   
+    
    </li>
 <li> 
-<b>Type of spectral model </b><small><i>(This is after 5 strings, then position 9) </i></small>.
+<b>Spectral models </b><small><i>(This models starts with the 9-th entry, after the 5 entries of the spatial model) </i></small>.
    Must be one of the following:
    <ul>
       <li>CONST</li>
@@ -95,7 +94,7 @@ The order must be as follows:
 </li>
    <li> 
    You must insert the right number of values, depending on the function model. Energies
-   must have one MeV, GeV, TeV units, and formatted as number*unit <i><small>(example: 50.3*GeV)</i></small>:
+   must have MeV, GeV or TeV units, and must be formatted as `number*unit` <i><small>(example: 50.3*GeV)</i></small>. **NOTE**: We have implemented by now only the units for the energy and not for the flux:
 
 | Function model                        | I             | II       | III         | IV           | V            |  VI |
 |---------------------------------------|---------------|----------|-------------|--------------|--------------|-----|
@@ -104,19 +103,19 @@ The order must be as follows:
 | Node                                  | N. parameters | Energy1  | Intensity1  | Energy2      | Intensity2   | ... |
 | Power law                             | Prefactor     | Index    | Pivot Energy |              |             |     |
 | Power law 2                           | Integral      | Index    | Lower Limit  | Upper Limit   |            |     |
-| Broken power law                      | Prefactor     | Index1   | Index2      | Break Energy   |             |     |
-| Exponential cut-off power law         | Prefactor     | Index    | Pivot Energy | Cutoff Energy |              |     |
+| Broken power law                      | Prefactor     | Index1   | Index2      | Break Energy   |            |     |
+| Exponential cut-off power law         | Prefactor     | Index    | Pivot Energy | Cutoff Energy |            |     |
 | Super exponentially cut-off power law | Prefactor     | Index1   | Index2      | Pivot Energy  | Cutoff Energy |     |
-| Log parabola                          | Prefactor     | Index    | Curvature   | Pivot Energy  |              |     |
-| Gaussian function                     | Normalization | Mean     | Sigma       |              |              |     |
+| Log parabola                          | Prefactor     | Index    | Curvature   | Pivot Energy  |             |     |
+| Gaussian function                     | Normalization | Mean     | Sigma       |               |             |     |
  
  <p> </p>
  
    </li>
 
    <li>
-   <i> NOT MANDATORY:</i> You can put here the normalization and the name or directory of a .fits file for
-   temporal evolution. <i><small>EXAMPLE: 20.4   temp_ev.fits</i></small>
+   <i> Temporal modeling:</i> If the last element in the row is a .fits file, also the temporal modeling will be "activated": here the last string specifies the name of the fits file (it can be given also with the relative path), and the last but one is the temporal normalization. Remember that the fits file specifying the temporal variation can be only in the range \[0,1\].
+<i><small>EXAMPLE: ...... 20.4   temp_ev.fits</i></small>
     <p></p>
    </li>
 </ol> 	
@@ -127,12 +126,12 @@ The order must be as follows:
 
 <ol>
 
-<li>  <b>Background name</b> (whatever you want) BUT it must start with BKG.
+<li>  <b>Background name</b> (whatever you want) **BUT** it must start with BKG.
  <p></p>
 </li>
 
 
-<li> <b>type of spatial model</b>. Must be one of the following: 
+<li> <b>Spatial model for the background</b>. Must be one of the following: 
    <ul>
    <li>BkgGauss</li>
    <li>Profile</li>
@@ -143,7 +142,7 @@ The order must be as follows:
     <p></p>
 </li>
 
-<li> Same as source case.
+<li> TS calculation is the same as for the source case: it is not very useful to compute the TS parameter for the background (and it will take a lot of time to compute it).
  <p></p>
 </li>
 
@@ -174,6 +173,6 @@ The order must be as follows:
  
 ### Authors
 
-@thomasgas :+1: :+1:  :stuck_out_tongue_closed_eyes:  :stuck_out_tongue_closed_eyes:
+@thomasgas :+1: :+1:
 
 @IlDordollano
