@@ -52,7 +52,7 @@ The order must be as follows:
    </ul>
     <p></p>
 </li>
-<li> The third element in the list must be an integer. If it is equal to `1`, then during the computation of the likelihood (via `ctlike`), the [Test Statistics](https://en.wikipedia.org/wiki/Test_statistic) value will be computed. The square root of the TS parameter gives the significance of the detection of the source: the higher is the value, the better the source has been extracted from the background.
+<li><b>TS computation</b> The third element in the list must be an integer. If it is equal to `1`, then during the computation of the likelihood (via `ctlike`), the **Test Statistics** value will be computed. The square root of the TS parameter gives the significance of the detection of the source: the higher is the value, the better the source has been extracted from the background.
 If you don't want to compute TS, just put the value equal to `0` in the input text file.
 
  <p></p>
@@ -75,7 +75,7 @@ If you don't want to compute TS, just put the value equal to `0` in the input te
    | Diffuse Map Cube       | Norm | 0    |0         |0        |0        |
     
    </li>
-<li> 
+<li>  
 <b>Spectral models </b><small><i>(This models starts with the 9-th entry, after the 5 entries of the spatial model) </i></small>.
    Must be one of the following:
    <ul>
@@ -92,7 +92,7 @@ If you don't want to compute TS, just put the value equal to `0` in the input te
    </ul>
     <p></p>
 </li>
-   <li> 
+   <li>
    You must insert the right number of values, depending on the function model. Energies
    must have MeV, GeV or TeV units, and must be formatted as `number*unit` <i><small>(example: 50.3*GeV)</i></small>. **NOTE**: We have implemented by now only the units for the energy and not for the flux:
 
@@ -110,11 +110,8 @@ If you don't want to compute TS, just put the value equal to `0` in the input te
 | Gaussian function                     | Normalization | Mean     | Sigma       |               |             |     |
  
  <p> </p>
- 
    </li>
-
-   <li>
-   <i> Temporal modeling:</i> If the last element in the row is a .fits file, also the temporal modeling will be "activated": here the last string specifies the name of the fits file (it can be given also with the relative path), and the last but one is the temporal normalization. Remember that the fits file specifying the temporal variation can be only in the range \[0,1\].
+   <li><b> Temporal modeling:</b> If the last element in the row is a .fits file, also the temporal modeling will be "activated": here the last string specifies the name of the fits file (it can be given also with the relative path), and the last but one is the temporal normalization. Remember that the fits file specifying the temporal variation can be only in the range \[0,1\].
 <i><small>EXAMPLE: ...... 20.4   temp_ev.fits</i></small>
     <p></p>
    </li>
@@ -142,11 +139,11 @@ If you don't want to compute TS, just put the value equal to `0` in the input te
     <p></p>
 </li>
 
-<li> TS calculation is the same as for the source case: it is not very useful to compute the TS parameter for the background (and it will take a lot of time to compute it).
+<li> TS calculation is the same as for the source case (third element): it is not very useful to compute the TS parameter for the background (and it will take a lot of time to compute it).
  <p></p>
 </li>
 
-<li> Same as source case, but now you have to choose between:
+<li> Same as source case (4th to 8th element), but now you have to choose between:
 
    |         Spatial model  |  I   |  II  |   III    |   VI    |   V     |
    | ---------------------- |  --- |------|----------|---------|---------|
@@ -159,14 +156,14 @@ If you don't want to compute TS, just put the value equal to `0` in the input te
  <p></p>
 </li>
 
-<li> Same as source case.
+<li> Same as before for the spectral models.
  <p></p>
 </li>
-<li> Same as source case.
+<li> Same as before for what concerns the parameters to use in the spectral models.
  <p></p>
 </li>
 
-<li> Same as source case.
+<li> There should be no temporal variation in the background model.
  <p></p>
 </li>
 </ol>
