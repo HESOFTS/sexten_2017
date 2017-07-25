@@ -6,7 +6,7 @@ The script, written in Python, generates a .xml file to characterize one or more
 The **Python** script need only the **GammaLib** library, which can be downloaded [here](http://gammalib.sourceforge.net/admin/index.html "Getting GammaLib page")
 
 The script can be launched from terminal typing: `$ python scriptModel_variable.py file_name`, where $ denotes the command prompt.
-If you add another variable, whatever you write, you get verbose mode on: `python scriptModel_variable.py file_name verb` <br>.
+If you add another variable, whatever you write, you get verbose mode on: `python scriptModel_variable.py file_name verb` <br>
 
 [General references at this page](http://cta.irap.omp.eu/ctools "ctools Homepage" )
 
@@ -32,7 +32,6 @@ one character (we use 0 as standard and we advise you to do so). Comments need t
 `src_name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits`
 
 The order must be as follows:
-<ol>
 
 <li><b>Source name</b> (without spaces in the name, but the underscore can be used).
  <p></p>
@@ -94,7 +93,7 @@ If you don't want to compute TS, just put the value equal to `0` in the input te
 </li>
    <li>
    You must insert the right number of values, depending on the function model. Energies
-   must have MeV, GeV or TeV units, and must be formatted as `number*unit` <i><small>(example: 50.3*GeV)</i></small>. **NOTE**: We have implemented by now only the units for the energy and not for the flux:
+   must have MeV, GeV or TeV units, and must be formatted as `number*unit` <i><small>(example: 50.3*GeV)</i></small>. <b>NOTE</b>: We have implemented by now only the units for the energy and not for the flux:
 
 | Function model                        | I             | II       | III         | IV           | V            |  VI |
 |---------------------------------------|---------------|----------|-------------|--------------|--------------|-----|
@@ -111,7 +110,7 @@ If you don't want to compute TS, just put the value equal to `0` in the input te
  
  <p> </p>
    </li>
-   <li><b> Temporal modeling:</b> If the last element in the row is a .fits file, also the temporal modeling will be "activated": here the last string specifies the name of the fits file (it can be given also with the relative path), and the last but one is the temporal normalization. Remember that the fits file specifying the temporal variation can be only in the range \[0,1\].
+   <li><b> Temporal modeling:</b> If the last element in the row is a .fits file, also the temporal modeling will be "activated": here the last string specifies the name of the fits file (it can be given also with the relative path), and the last but one is the temporal normalization. Remember that the fits file specifying the temporal variation can be only in the range [0,1].
 <i><small>EXAMPLE: ...... 20.4   temp_ev.fits</i></small>
     <p></p>
    </li>
@@ -123,7 +122,7 @@ If you don't want to compute TS, just put the value equal to `0` in the input te
 
 <ol>
 
-<li>  <b>Background name</b> (whatever you want) **BUT** it must start with BKG.
+<li>  <b>Background name</b> (whatever you want) <b>BUT</b> it must start with BKG.
  <p></p>
 </li>
 
@@ -166,7 +165,6 @@ If you don't want to compute TS, just put the value equal to `0` in the input te
 <li> There should be no temporal variation in the background model.
  <p></p>
 </li>
-</ol>
  
 ### Authors
 
