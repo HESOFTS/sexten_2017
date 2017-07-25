@@ -7,3 +7,7 @@ model_creator/\.ipynb_checkpoints/
 \.pyc
 
 model_creation/\.pyc
+
+simulation/sim_events*fits
+
+simulation/*.log
