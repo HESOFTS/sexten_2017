@@ -18,4 +18,13 @@
     <parameter name="Deadtime" deadc="0.95" />
     <parameter name="Calibration" database="prod2" response="South_0.5h" />
   </observation>
+  <observation name="Crab" id="0003" instrument="CTA">
+    <parameter name="Pointing" ra="83.6331" dec="22.0145" />
+    <parameter name="EnergyBoundaries" emin="50000" emax="20000000" />
+    <parameter name="GoodTimeIntervals" tmin="60" tmax="90" />
+    <parameter name="TimeReference" mjdrefi="51544" mjdreff="0.5" timeunit="s" timesys="TT" timeref="LOCAL" />
+    <parameter name="RegionOfInterest" ra="83.6331" dec="22.0145" rad="8" />
+    <parameter name="Deadtime" deadc="0.95" />
+    <parameter name="Calibration" database="prod2" response="South_0.5h" />
+  </observation>
 </observation_list>
