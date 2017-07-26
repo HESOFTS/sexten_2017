@@ -5,7 +5,7 @@ The script, written in Python, generates a .xml file to characterize one or more
 
 The **Python** script need only the **GammaLib** library, which can be downloaded [here](http://gammalib.sourceforge.net/admin/index.html "Getting GammaLib page")
 
-The script can be launched from terminal typing: `$ python scriptModel_variable.py file_name`, where $ denotes the command prompt.
+The script can be launched from terminal typing: `$ python scriptModel_variable.py file_name` (where $ denotes the command prompt).
 If you add another variable, whatever you write, you get verbose mode on: `python scriptModel_variable.py file_name verb` <br>
 
 [General references at this page](http://cta.irap.omp.eu/ctools "ctools Homepage" )
@@ -32,6 +32,7 @@ one character (we use 0 as standard and we advise you to do so). Comments need t
 `src_name  Point  1  329.719  -30.2217   0    0   0   FUNC  1.0  name.out  2.0   name.fits`
 
 The order must be as follows:
+<ol>
 
 <li><b>Source name</b> (without spaces in the name, but the underscore can be used).
  <p></p>
@@ -51,7 +52,7 @@ The order must be as follows:
    </ul>
     <p></p>
 </li>
-<li><b>TS computation</b> The third element in the list must be an integer. If it is equal to `1`, then during the computation of the likelihood (via `ctlike`), the **Test Statistics** value will be computed. The square root of the TS parameter gives the significance of the detection of the source: the higher is the value, the better the source has been extracted from the background.
+<li><b>TS computation: </b> The third element in the list must be an integer. If it is equal to `1`, then during the computation of the likelihood (via `ctlike`), the <b>Test Statistics</b> value will be computed. The square root of the TS parameter gives the significance of the detection of the source: the higher is the value, the better the source has been extracted from the background.
 If you don't want to compute TS, just put the value equal to `0` in the input text file.
 
  <p></p>
@@ -165,6 +166,7 @@ If you don't want to compute TS, just put the value equal to `0` in the input te
 <li> There should be no temporal variation in the background model.
  <p></p>
 </li>
+</ol>
  
 ### Authors
 
