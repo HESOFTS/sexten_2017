@@ -2,15 +2,21 @@
 
 ## Introduction ##
 
+We all know that the Crab has a nebula and a pulsar. From Fermi data, it is possible to disentangle, even if not completely, the emission
+from the nebula and from the pulsar. To do this, we will have to assign a pulse phase to each photon according to the pulsar properties like spin period, derivative and so on. These information are contained in the so called ephemerides of the pulsar. Usually you can find the ephemerides here: [https://fermi.gsfc.nasa.gov/ssc/data/access/lat/ephems/](https://fermi.gsfc.nasa.gov/ssc/data/access/lat/ephems/). <br>
+The ephemerides I used were provided by Matthew Kerr, but they are already present in the data set. <br>
+
+The data we are going to analyze are from the Crab flare of March 2013. You can find a reference in [https://arxiv.org/abs/1308.6698v1](https://arxiv.org/abs/1308.6698v1). <br>
+
 This file contains all the commands I run to perform the pulse assignment of the events
 and the likelihood analysis. <br>
-All the commands were run from the Crab\_Flare\_2014 directory. <br>
+All the commands were run from the Crab\_Flare\_2014 directory. (I called it 2014 by mistake, I realized too late '-.-) <br>
 In order not to overwrite the files in the directory, you can create a new one and copy the
 event and spacescraft files (L1707191221448796F97375\_PH00.fits and L1707191221448796F97375\_SC00.fits) and 
 the ephemerides file (Crab\_ephem\_new.par) in the new directory. <br>
 After that you can issue the same commands you find below. 
 
-You can find the content of this tutorial at the links [https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/pulsar_gating_tutorial.html](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/pulsar_gating_tutorial.html) and [https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/likelihood_tutorial.html](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/likelihood_tutorial.html).
+You can find the content of this tutorial at the links [https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/pulsar\_gating\_tutorial.html](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/pulsar_gating_tutorial.html) and [https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/likelihood_tutorial.html](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/likelihood_tutorial.html).
 
 ## Setup and data selection ##
 
@@ -201,6 +207,8 @@ we see that the so called off-phase region (so the nebula contribution) is betwe
       maximum zenith angle value (degrees) (0:180) [95] 
       Done.
 
+**REMEMBER: since you cut events from the data, when we will do the likelihood analysis and obtain the fluxes of the sources, we have to scale the flux by the fraction of data we removed. In our case, where we cut from 0.5 to 0.9 in phase, the scale factor will be 1/(0.9-0.5)=1/0.4=2.5**
+
 We can create a count map of the output file (Crab\_Flare\_2014\_05\_09\_phasecut.fits) and compare it with the one we did before. You can see that the Crab is a lot fainter.
 
       [fermi-cta@localhost Crab_Flare_2014]$ gtbin
@@ -255,116 +263,153 @@ You can inspect the exposure in the energy bins with **ds9**:
 
       [fermi-cta@localhost Crab_Flare_2014]$ ds9 Crab_Flare_2014_nebula_expmap.fits
 
-<!--
+
 ## Model creation ##
 
-To create your source model, first I downloaded some needed files:
+To perform the likelihood analysis, we need a source model. The model describes the spectra of all the sources in the so called source region. One will be of
+course the source we are analyzing, while the others will be sources contributing to the expected number of counts. Of course, we will take into account of
+the galactic diffuse emission and isotropic emission. The spectra and parameters of the sources will be taken from the 3FHL catalog.
 
-      [fermi-cta@localhost Crab_Flare_2014]$ wget -q https://fermi.gsfc.nasa.gov/ssc/data/analysis/software/aux/gll_iem_v06.fits &
+To create the source model, first I downloaded some needed files:
 
-      [fermi-cta@localhost Crab_Flare_2014]$ wget -q https://fermi.gsfc.nasa.gov/ssc/data/analysis/software/aux/iso_P8R2_SOURCE_V6_v06.txt &
+- the FITS file containing the galactic diffuse background modeled emission:
+      
+            [fermi-cta@localhost Crab_Flare_2014]$ wget -q https://fermi.gsfc.nasa.gov/ssc/data/analysis/software/aux/gll_iem_v06.fits &
 
-      [fermi-cta@localhost Crab_Flare_2014]$ wget -q https://fermi.gsfc.nasa.gov/ssc/data/analysis/user/make3FGLxml.py &
+- the TXT file containing the isotropic background emission:
 
-      [fermi-cta@localhost Crab_Flare_2014]$ wget -q https://fermi.gsfc.nasa.gov/ssc/data/access/lat/4yr_catalog/gll_psc_v16.fit &
+            [fermi-cta@localhost Crab_Flare_2014]$ wget -q https://fermi.gsfc.nasa.gov/ssc/data/analysis/software/aux/iso_P8R2_SOURCE_V6_v06.txt &
 
-[fermi-cta@localhost Crab_Flare_2014]$ python make3FGLxml.py gll_psc_v16.fit Crab_Flare_2014_05_09_phasecut.fits -r 10
-This is make3FGLxml version 01r0.
-The default diffuse model files and names are for pass 8 and assume you have v10r00p05 of the Fermi Science Tools or higher.
-Creating file and adding sources from 3FGL
-Extended source S 147 in ROI, make sure $(LATEXTDIR)/Templates/S147.fits is the correct path to the extended template.
-Extended source IC443 in ROI, make sure $(LATEXTDIR)/Templates/IC443.fits is the correct path to the extended template.
-Added 123 point sources and 2 extended sources
-If using unbinned likelihood you will need to rerun gtdiffrsp for the extended sources or rerun the makeModel function with optional argument psForce=True
+- the python script to produce the input model for our likelihood:
 
-[fermi-cta@localhost Crab_Flare_2014]$ wget -q https://fermi.gsfc.nasa.gov/ssc/data/access/lat/4yr_catalog/LAT_extended_sources_v15.tgz &
+            [fermi-cta@localhost Crab_Flare_2014]$ wget -q https://fermi.gsfc.nasa.gov/ssc/data/analysis/user/make3FGLxml.py &
 
-[fermi-cta@localhost Crab_Flare_2014]$ tar -xvzf LAT_extended_sources_v15.tgz
+- the FITS file containing the sources in the 3FHL catalog:
 
-[fermi-cta@localhost Crab_Flare_2014]$ cp Extended_archive_v15/Templates/IC443.fits .
+            [fermi-cta@localhost Crab_Flare_2014]$ wget -q https://fermi.gsfc.nasa.gov/ssc/data/access/lat/4yr_catalog/gll_psc_v16.fit &
 
-[fermi-cta@localhost Crab_Flare_2014]$ cp Extended_archive_v15/Templates/S147.fits .
+If you are working in a new directory, copy those files in the current directory. To say the truth, the first two files are already available inside the directory:
 
-[fermi-cta@localhost Crab_Flare_2014]$ python make3FGLxml.py gll_psc_v16.fit Crab_Flare_2014_05_09_phasecut.fits -r 0.1
-This is make3FGLxml version 01r0.
-The default diffuse model files and names are for pass 8 and assume you have v10r00p05 of the Fermi Science Tools or higher.
-Warning: mymodel.xml already exists, file will be overwritten if you proceed with makeModel.
-Creating file and adding sources from 3FGL
-Extended source S 147 in ROI, make sure $(LATEXTDIR)/Templates/S147.fits is the correct path to the extended template.
-Extended source IC443 in ROI, make sure $(LATEXTDIR)/Templates/IC443.fits is the correct path to the extended template.
-Added 123 point sources and 2 extended sources
-If using unbinned likelihood you will need to rerun gtdiffrsp for the extended sources or rerun the makeModel function with optional argument psForce=True
+            $FERMI_DIR/refdata/fermi/galdiffuse
 
-[fermi-cta@localhost Crab_Flare_2014]$ mv mymodel.xml Crab_nebula.xml
+We are now ready to create our model. There is a user contributed tool called **make3FGLxml.py** which can be used to do that. Here below you find an example applied to our Crab nebula case:
 
-[fermi-cta@localhost Crab_Flare_2014]$ gtdiffrsp 
-Event data file[Crab_Flare_2014_05_09_phasecut.fits] 
-Spacecraft data file[L1707191221448796F97375_SC00.fits] 
-Source model file[Crab_nebula.xml] 
-Response functions to use[CALDB] 
-adding source IC443
-adding source S 147
-adding source gll_iem_v06
-adding source iso_P8R2_SOURCE_V6_v06
-Working on...
-Crab_Flare_2014_05_09_phasecut.fits.....................!
+      [fermi-cta@localhost Crab_Flare_2014]$ python make3FGLxml.py gll_psc_v16.fit Crab_Flare_2014_05_09_phasecut.fits -o input_model.xml
+      -G gll_iem_v06.fits -g gll_iem_v06 -I iso_P8R2_SOURCE_V6_v06.txt -i iso_P8R2_SOURCE_V6_v06 -r 0.1
+      This is make3FGLxml version 01r0.
+      The default diffuse model files and names are for pass 8 and assume you have v10r00p05 of the Fermi Science Tools or higher.
+      Creating file and adding sources from 3FGL
+      Extended source S 147 in ROI, make sure $(LATEXTDIR)/Templates/S147.fits is the correct path to the extended template.
+      Extended source IC443 in ROI, make sure $(LATEXTDIR)/Templates/IC443.fits is the correct path to the extended template.
+      Added 123 point sources and 2 extended sources
+      If using unbinned likelihood you will need to rerun gtdiffrsp for the extended sources or rerun the makeModel function with optional argument psForce=True
 
-[fermi-cta@localhost Crab_Flare_2014]$ gtlike refit=yes plot=yes sfile=Crab_nebula_output.xml
-Statistic to use (BINNED|UNBINNED) [UNBINNED] 
-Spacecraft file[none] L1707191221448796F97375_SC00.fits 
-Event file[none] Crab_Flare_2014_05_09_phasecut.fits 
-Unbinned exposure map[none] Crab_Flare_2014_nebula_expmap.fits 
-Exposure hypercube file[none] Crab_Flare_2014_nebula_ltcube.fits 
-Source model file[] Crab_nebula.xml 
-Response functions to use[CALDB] 
-Optimizer (DRMNFB|NEWMINUIT|MINUIT|DRMNGB|LBFGS) [MINUIT] NEWMINUIT
+A bit of explanation:
 
-CrabNebula:
-Prefactor: 3.751911779 +/- 0.1355590489
-Index: 3.124514894 +/- 0.04227568586
-Scale: 100.797539
-Npred: 2618.147627
-ROI distance: 0
-TS value: 5158.178961
-Flux: 1.814841543e-06 +/- 4.671329399e-08 photons/cm^2/s
+- the first argument is the FITS file containing the 3FHL catalog
+- the second argument is the event file
+- **-o** specifies the name of the output model file
+- **-G** specifies the location of the galactic diffuse emission FITS file
+- **-g** specifies the name of the galactic diffuse emission in the output model
+- **-I** specifies the location of the isotropic emission file
+- **-i** specifies the name of the isotropic emission in the output model
+- **-r** specifies the radius beyond which the parameters of the source will be fixed
 
-IC443:
-norm: 1.207444332 +/- 0.1475324524
-alpha: 1.829382688 +/- 0.08240889151
-beta: 0.1283599027 +/- 0.0492879851
-Eb: 1444.22
-Npred: 257.2745557
-Flux: 1.27875749e-07 +/- 1.795900505e-08 photons/cm^2/s
+From the output of **make3FGLxml.py** we see that in the source region there are two extended sources, S147 and IC443. To compute correctly the contribution of the extended sources, we
+need to download the following file:
 
-S 147:
-Prefactor: 1.121540998 +/- 0.4350005657
-Index: 2.604827655 +/- 0.2840344868
-Scale: 705.126282
-Npred: 179.1997756
-Flux: 1.133792631e-07 +/- 2.675292344e-08 photons/cm^2/s
+      [fermi-cta@localhost Crab_Flare_2014]$ wget -q https://fermi.gsfc.nasa.gov/ssc/data/access/lat/4yr_catalog/LAT_extended_sources_v15.tgz &
 
-gll_iem_v06:
-Prefactor: 0.4011867121 +/- 0.00744211308
-Index: 0
-Scale: 100
-Npred: 12224.65993
-Flux: 0.0001960401586 +/- 3.63629064e-06 photons/cm^2/s
+We will decompress it and copy in the current directory the FITS file corresponding to the two sources:
 
-iso_P8R2_SOURCE_V6_v06:
-Normalization: 0.2242893312 +/- 0.04966209095
-Npred: 929.3634311
-Flux: 3.355467134e-05 +/- 7.423042468e-06 photons/cm^2/s
+      [fermi-cta@localhost Crab_Flare_2014]$ tar -xvzf LAT_extended_sources_v15.tgz
+      [fermi-cta@localhost Crab_Flare_2014]$ cp Extended_archive_v15/Templates/IC443.fits .
+      [fermi-cta@localhost Crab_Flare_2014]$ cp Extended_archive_v15/Templates/S147.fits .
 
-WARNING: Fit may be bad in range [100, 12197.6] (MeV)
-WARNING: Fit may be bad in range [40536, 60491.9] (MeV)
+To simplify more the model, we will fix the parameters of all the sources except the Crab, the galactic diffuse and isotropic emission. Then we rename the output model.
 
-Total number of observed counts: 20499
-Total number of model events: 23446.86653
+      [fermi-cta@localhost Crab_Flare_2014]$ mv mymodel.xml Crab_nebula.xml
 
--log(Likelihood): 200819.0294
+Since we have diffuse sources, we will compute their diffuse response with **gtdiffrsp**:
 
-Writing fitted model to Crab_nebula_output.xml
-Refit? [y] 
-n
-Elapsed CPU time: 1281.94
--->
+      [fermi-cta@localhost Crab_Flare_2014]$ gtdiffrsp 
+      Event data file[Crab_Flare_2014_05_09_phasecut.fits] 
+      Spacecraft data file[L1707191221448796F97375_SC00.fits] 
+      Source model file[Crab_nebula.xml] 
+      Response functions to use[CALDB] 
+      adding source IC443
+      adding source S 147
+      adding source gll_iem_v06
+      adding source iso_P8R2_SOURCE_V6_v06
+      Working on...
+      Crab_Flare_2014_05_09_phasecut.fits.....................!
+
+It's better to compute the diffuse response before doing the likelihood, because there is a high probability that we will run the likelihood analysis many times. If we do not do it now, when we will run **gtlike**, the diffuse response will be computed every time. Since it can take long, better to do it before just for one time. <br>
+Once we have the diffuse response, we can finally perform the Likelihoood minimization with **gtlike**:
+
+      [fermi-cta@localhost Crab_Flare_2014]$ gtlike refit=yes plot=yes sfile=Crab_nebula_output.xml
+      Statistic to use (BINNED|UNBINNED) [UNBINNED] 
+      Spacecraft file[none] L1707191221448796F97375_SC00.fits 
+      Event file[none] Crab_Flare_2014_05_09_phasecut.fits 
+      Unbinned exposure map[none] Crab_Flare_2014_nebula_expmap.fits 
+      Exposure hypercube file[none] Crab_Flare_2014_nebula_ltcube.fits 
+      Source model file[] Crab_nebula.xml 
+      Response functions to use[CALDB] 
+      Optimizer (DRMNFB|NEWMINUIT|MINUIT|DRMNGB|LBFGS) [MINUIT] NEWMINUIT
+
+The output of **gtlike** is quite long, since it will write all the values of all the parameters of all the sources in the input file. The source model with the parameter values found after the maximization are put in the output model (Crab\_nebula\_output.xml). Moreover, since we enabled the option **refit**, after the first fit, we can fit again starting with the values found in the first maximization to try to have better estimates of the values. <br>
+Here below you can find part of the output of **gtlike**:
+
+      CrabNebula:
+      Prefactor: 3.751911779 +/- 0.1355590489
+      Index: 3.124514894 +/- 0.04227568586
+      Scale: 100.797539
+      Npred: 2618.147627
+      ROI distance: 0
+      TS value: 5158.178961
+      Flux: 1.814841543e-06 +/- 4.671329399e-08 photons/cm^2/s
+      
+      IC443:
+      norm: 1.207444332 +/- 0.1475324524
+      alpha: 1.829382688 +/- 0.08240889151
+      beta: 0.1283599027 +/- 0.0492879851
+      Eb: 1444.22
+      Npred: 257.2745557
+      Flux: 1.27875749e-07 +/- 1.795900505e-08 photons/cm^2/s
+      
+      S 147:
+      Prefactor: 1.121540998 +/- 0.4350005657
+      Index: 2.604827655 +/- 0.2840344868
+      Scale: 705.126282
+      Npred: 179.1997756
+      Flux: 1.133792631e-07 +/- 2.675292344e-08 photons/cm^2/s
+      
+      gll_iem_v06:
+      Prefactor: 0.4011867121 +/- 0.00744211308
+      Index: 0
+      Scale: 100
+      Npred: 12224.65993
+      Flux: 0.0001960401586 +/- 3.63629064e-06 photons/cm^2/s
+      
+      iso_P8R2_SOURCE_V6_v06:
+      Normalization: 0.2242893312 +/- 0.04966209095
+      Npred: 929.3634311
+      Flux: 3.355467134e-05 +/- 7.423042468e-06 photons/cm^2/s
+      
+      WARNING: Fit may be bad in range [100, 12197.6] (MeV)
+      WARNING: Fit may be bad in range [40536, 60491.9] (MeV)
+      
+      Total number of observed counts: 20499
+      Total number of model events: 23446.86653
+      
+      -log(Likelihood): 200819.0294
+      
+      Writing fitted model to Crab_nebula_output.xml
+      Refit? [y] 
+      n
+      Elapsed CPU time: 1281.94
+      -->
+
+You can find the summary of sources and their final parameters in the file **result.dat**.
+
+**Remember to scale the fluxes of the sources, including the Crab, by 2.5!!! This is because we removed data when cutting on the pulse phase.**
