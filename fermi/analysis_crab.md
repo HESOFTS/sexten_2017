@@ -146,7 +146,8 @@ Since when I did the analysis in the Crab\_Flare\_2014 directory I had two ephem
 
 To perform the pulse assignment of the events, we use the Fermi plugin of TEMPO2. It will add a column called PULSE\_PHASE to our event file with the pulse phase of each event.
 
-      [fermi-cta@localhost Crab_Flare_2014]$ tempo2 -gr fermi -ft1 Crab_Flare_2014_gti_new_ephem.fits -ft2 L1707191221448796F97375_SC00.fits -f Crab_ephem_new.par -phase -graph 0
+      [fermi-cta@localhost Crab_Flare_2014]$ tempo2 -gr fermi -ft1 Crab_Flare_2014_gti_new_ephem.fits 
+       -ft2 L1707191221448796F97375_SC00.fits -f Crab_ephem_new.par -phase -graph 0
       This program comes with ABSOLUTELY NO WARRANTY.
       This is free software, and you are welcome to redistribute it
       under conditions of GPL license.
