@@ -192,7 +192,11 @@ After inspecting the pulse phase light curve with **fv**:
 
       [fermi-cta@localhost Crab_Flare_2014]$ fv Crab_Flare_2014_gti_new_ephem.fits
 
-we see that the so called off-phase region (so the nebula contribution) is between 0.5 and 0.9 pulse phase. We use again **gtselect** to select the pulse phase interval:
+we see that the so called off-phase region (so the nebula contribution) is between 0.5 and 0.9 pulse phase. 
+
+![Crab pulse phase light curve](crab_pulse_lc.png)
+
+We use again **gtselect** to select the pulse phase interval:
 
       [fermi-cta@localhost Crab_Flare_2014]$ gtselect evclass=128 evtype=3 phasemin=.5 phasemax=.9
       Input FT1 file[L1707191221448796F97375_PH00.fits] Crab_Flare_2014_gti_new_ephem.fits 
