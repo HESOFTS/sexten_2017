@@ -394,6 +394,8 @@ To simplify the model, replace the previous section with:
 </source>
 ```
 
+If you want to try a different spectral model for the Crab, you can look in [https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/source\_models.html](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/source_models.html) and [https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/xml\_model\_defs.html#xmlModelDefinitions](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/xml_model_defs.html#xmlModelDefinitions).
+
 From the output of **make3FGLxml.py** we see that in the source region there are two extended sources, S147 and IC443. To compute correctly the contribution of the extended sources, we
 need to download the following file:
 
@@ -533,7 +535,21 @@ Since we enabled the *plot* option of **gtlike**, we have the plot with the spec
 
 ![Crab nebula fit model](crab_nebula_fit.png)
 
+The color codes are:
+
+* Black - summed model
+* Red - first source in results.dat file
+* Green - second source
+* Blue - third source
+* Magenta - fourth source
+* Cyan - the fifth source
+* repetition of the colors starting from red
+
+So it's difficult to find Crab spectrum since it is almost at the end of result.dat :(
+
 ![Crab nebula fit residuals](crab_nebula_residuals.png)
+
+The residuals are not so good: this means that the model probably is too simple, but just to learn how to produce a simple model is fine.
 
 **Remember to scale the fluxes of the sources, including the Crab, by 2.5!!! This is because we removed data when cutting on the pulse phase.**
 
