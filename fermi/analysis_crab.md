@@ -278,6 +278,10 @@ You can inspect the exposure in the energy bins with **ds9**:
 
       [fermi-cta@localhost Crab_Flare_2014]$ ds9 Crab_Flare_2014_nebula_expmap.fits
 
+Here below is the exposure map for the first energy bin:
+
+![Crab nebula exposure map](crab_nebula_expmap.png)
+
 
 ## Model creation ##
 
@@ -330,6 +334,66 @@ A bit of explanation:
 - **-i** specifies the name of the isotropic emission in the output model
 - **-r** specifies the radius beyond which the parameters of the source will be fixed
 
+If you look into the output file of **make3FGLxml.xml** called input\_model.xml, there are 3 sources positionally consistent with the Crab:
+
+```html
+<source ROI_Center_Distance="0.005" name="3FGL J0534.5+2201i" type="PointSource">
+        <spectrum apply_edisp="false" type="PowerLaw">
+        <!-- Source is 0.00537482056489 degrees away from ROI center -->
+        <!-- Source parameters were held fixed in 3FGL analysis, free at your own discretion -->
+                <parameter free="0" max="1e4" min="1e-4" name="Prefactor" scale="1e-11" value="1.83367123568"/>
+                <parameter free="0" max="10.0" min="0.0" name="Index" scale="-1.0" value="1.64"/>
+                <parameter free="0" max="5e5" min="30" name="Scale" scale="1.0" value="1000.000000"/>
+        </spectrum>
+        <spatialModel type="SkyDirFunction">
+                <parameter free="0" max="360.0" min="-360.0" name="RA" scale="1.0" value="83.6331"/>
+                <parameter free="0" max="90" min="-90" name="DEC" scale="1.0" value="22.0199"/>
+        </spatialModel>
+</source>
+<source ROI_Center_Distance="0.005" name="3FGL J0534.5+2201s" type="PointSource">
+        <spectrum apply_edisp="false" type="PowerLaw">
+        <!-- Source is 0.00537482056489 degrees away from ROI center -->
+                <parameter free="1" max="1e4" min="1e-4" name="Prefactor" scale="1e-8" value="1.14475824375"/>
+                <parameter free="1" max="10.0" min="0.0" name="Index" scale="-1.0" value="5.71589"/>
+                <parameter free="0" max="5e5" min="30" name="Scale" scale="1.0" value="100.797539"/>
+        </spectrum>
+        <spatialModel type="SkyDirFunction">
+                <parameter free="0" max="360.0" min="-360.0" name="RA" scale="1.0" value="83.6331"/>
+                <parameter free="0" max="90" min="-90" name="DEC" scale="1.0" value="22.0199"/>
+        </spatialModel>
+</source>
+<source ROI_Center_Distance="0.010" name="3FGL J0534.5+2201" type="PointSource">
+        <spectrum apply_edisp="false" type="PLSuperExpCutoff">
+        <!-- Source is 0.0103450223494 degrees away from ROI center -->
+                <parameter free="1" max="1e4" min="1e-4" name="Prefactor" scale="1e-10" value="5.99114591271"/>
+                <parameter free="1" max="10.0" min="0.0" name="Index1" scale="-1.0" value="2.04501"/>
+                <parameter free="1" max="1e5" min="1e1" name="Cutoff" scale="1.0" value="8143.043457"/>
+                <parameter free="0" max="5e5" min="30" name="Scale" scale="1.0" value="635.591125"/>
+                <parameter free="0" max="5" min="0" name="Index2" scale="1.0" value="1.000000"/>
+        </spectrum>
+        <spatialModel type="SkyDirFunction">
+                <parameter free="0" max="360.0" min="-360.0" name="RA" scale="1.0" value="83.6372"/>
+                <parameter free="0" max="90" min="-90" name="DEC" scale="1.0" value="22.0241"/>
+        </spatialModel>
+</source>
+```
+
+To simplify the model, replace the previous section with:
+
+```html
+<source name="CrabNebula" type="PointSource">
+        <spectrum apply_edisp="false" type="PowerLaw">
+                <parameter free="1" max="1e4" min="1e-4" name="Prefactor" scale="1e-8" value="1.14475824375"/>
+                <parameter free="1" max="10.0" min="0.0" name="Index" scale="-1.0" value="5.71589"/>
+                <parameter free="0" max="5e5" min="30" name="Scale" scale="1.0" value="100.797539"/>
+        </spectrum>
+        <spatialModel type="SkyDirFunction">
+                <parameter free="0" max="360.0" min="-360.0" name="RA" scale="1.0" value="83.63308333"/>
+                <parameter free="0" max="90" min="-90" name="DEC" scale="1.0" value="22.0145"/>
+        </spatialModel>
+</source>
+```
+
 From the output of **make3FGLxml.py** we see that in the source region there are two extended sources, S147 and IC443. To compute correctly the contribution of the extended sources, we
 need to download the following file:
 
@@ -341,7 +405,45 @@ We will decompress it and copy in the current directory the FITS file correspond
       [fermi-cta@localhost Crab_Flare_2014]$ cp Extended_archive_v15/Templates/IC443.fits .
       [fermi-cta@localhost Crab_Flare_2014]$ cp Extended_archive_v15/Templates/S147.fits .
 
-To simplify more the model, we will fix the parameters of all the sources except the Crab, the galactic diffuse and isotropic emission. Then we rename the output model.
+Make sure to change the path of the FITS file in the input model are the correct ones for the extended source. In the case of IC443, you have to replace:
+
+```html
+<source ROI_Center_Distance="9.893" name="IC443" type="DiffuseSource">
+        <spectrum apply_edisp="false" type="LogParabola">
+        <!-- Source is 9.89263159306 degrees away from ROI center -->
+        <!-- Source is outside specified radius limit of 0.1 -->
+                <parameter free="0" max="1e4" min="1e-4" name="norm" scale="1e-11" value="3.43421263649"/>
+                <parameter free="0" max="5.0" min="0.0" name="alpha" scale="1.0" value="1.99989"/>
+                <parameter free="0" max="10.0" min="0.0" name="beta" scale="1.0" value="0.133509"/>
+                <parameter free="0" max="5e5" min="30" name="Eb" scale="1.0" value="1444.22"/>
+        </spectrum>
+        <spatialModel file="$(LATEXTDIR)/Templates/IC443.fits" map_based_integral="true" type="SpatialMap">
+                <parameter free="0" max="1000" min="0.001" name="Prefactor" scale="1" value="1"/>
+        </spatialModel>
+</source>
+```
+
+with:
+
+```html
+<source ROI_Center_Distance="9.893" name="IC443" type="DiffuseSource">
+        <spectrum apply_edisp="false" type="LogParabola">
+        <!-- Source is 9.89263159306 degrees away from ROI center -->
+        <!-- Source is outside specified radius limit of 0.1 -->
+                <parameter free="0" max="1e4" min="1e-4" name="norm" scale="1e-11" value="3.43421263649"/>
+                <parameter free="0" max="5.0" min="0.0" name="alpha" scale="1.0" value="1.99989"/>
+                <parameter free="0" max="10.0" min="0.0" name="beta" scale="1.0" value="0.133509"/>
+                <parameter free="0" max="5e5" min="30" name="Eb" scale="1.0" value="1444.22"/>
+        </spectrum>
+        <spatialModel file="./IC443.fits" map_based_integral="true" type="SpatialMap">
+                <parameter free="0" max="1000" min="0.001" name="Prefactor" scale="1" value="1"/>
+        </spatialModel>
+</source>
+```
+
+Of course you have to do the same for S147.
+
+To simplify more the model, we fixed the parameters of all the sources except the Crab, the galactic diffuse and isotropic emission. Since we requested that the sources beyond 0.1 degrees to be fixed, this was done automatically with the script. Then we rename the output model.
 
       [fermi-cta@localhost Crab_Flare_2014]$ mv mymodel.xml Crab_nebula.xml
 
@@ -425,6 +527,27 @@ Here below you can find part of the output of **gtlike**:
       Elapsed CPU time: 1281.94
       -->
 
-You can find the summary of sources and their final parameters in the file **result.dat**.
+You can find the summary of sources and their final parameters in the file **result.dat**. <br>
+
+Since we enabled the *plot* option of **gtlike**, we have the plot with the spectra for all sources (the summed model) and for each source indipendently. The second plot shows the residuals of the summed model fit. 
+
+![Crab nebula fit model](crab_nebula_fit.png)
+
+![Crab nebula fit residuals](crab_nebula_residuals.png)
 
 **Remember to scale the fluxes of the sources, including the Crab, by 2.5!!! This is because we removed data when cutting on the pulse phase.**
+
+Scaling the flux obtained for the Crab, we obtain:
+
+      Crab flux: 4.53e-06 photons/cm^2/s
+      Spectral index: 3.12 +/- 0.04
+
+We compare these values with the one in the paper [https://arxiv.org/abs/1308.6698v1](https://arxiv.org/abs/1308.6698v1):
+
+      Crab flux: 4.05e-06 photons/cm^2/s
+      Spectral index: 3.09 +/- 0.03
+
+The flux we found is higher than the one in the paper: this is most probably because we modeled the Crab with just a power law, while in the paper the Crab emission was split into three different component (pulsar emission, Inverse Compton and Synchrotron emission from the nebula) with different spectral functions. <br>
+In any case we can see that the spectral index is softer than usual because of the flare, so that we have more low energy photons. You can repeat the analysis, like I did, cutting at 1 GeV instead of 100 MeV for the low energy end of the data selection and see that the spectrum will harden. <br>
+
+Now that we finished the likelihood, you can try to do the same analysis with the Python wrappers of the Fermi Tools: [https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/python_tutorial.html](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/python_tutorial.html)
