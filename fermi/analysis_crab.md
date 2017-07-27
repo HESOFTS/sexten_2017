@@ -228,6 +228,15 @@ We can create a count map of the output file (Crab\_Flare\_2014\_05\_09\_phasecu
 
       [fermi-cta@localhost Crab_Flare_2014]$ ds9 Crab_Flare_2014_05_09_phasecut_cmap.fits
 
+We can compare the two count maps:
+
+- before removal
+![Crab count map: nebula + pulsar](crab_cmap.png)
+
+- after removal
+![Crab count map: nebula](crab_nebula_cmap.png)
+
+
 ## Exposure map calculation ##
 
 To compute the exposure map, first you have to produce the so called livetime cube (the time that the LAT observed a given position on the sky at a given inclination angle) with **gtltcube**:
