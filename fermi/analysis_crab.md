@@ -443,7 +443,7 @@ with:
 
 Of course you have to do the same for S147.
 
-To simplify more the model, we fixed the parameters of all the sources except the Crab, the galactic diffuse and isotropic emission. Since we requested that the sources beyond 0.1 degrees to be fixed, this was done automatically with the script. Then we rename the output model.
+To simplify more the model, we fixed the parameters of all the sources except the Crab, the galactic diffuse and isotropic emission. Since we requested the sources beyond 0.1 degrees to be fixed, this was done automatically with the script. Then we rename the output model.
 
       [fermi-cta@localhost Crab_Flare_2014]$ mv mymodel.xml Crab_nebula.xml
 
@@ -547,7 +547,7 @@ We compare these values with the one in the paper [https://arxiv.org/abs/1308.66
       Crab flux: 4.05e-06 photons/cm^2/s
       Spectral index: 3.09 +/- 0.03
 
-The flux we found is higher than the one in the paper: this is most probably because we modeled the Crab with just a power law, while in the paper the Crab emission was split into three different component (pulsar emission, Inverse Compton and Synchrotron emission from the nebula) with different spectral functions. <br>
+The flux we found is higher than the one in the paper: this is most probably because we modeled the Crab with just a power law, while in the paper the Crab emission was split into three different components (pulsar emission, Inverse Compton and Synchrotron emission from the nebula) with different spectral functions. <br>
 In any case we can see that the spectral index is softer than usual because of the flare, so that we have more low energy photons. You can repeat the analysis, like I did, cutting at 1 GeV instead of 100 MeV for the low energy end of the data selection and see that the spectrum will harden. <br>
 
 Now that we finished the likelihood, you can try to do the same analysis with the Python wrappers of the Fermi Tools: [https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/python_tutorial.html](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/python_tutorial.html)
