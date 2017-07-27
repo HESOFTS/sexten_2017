@@ -311,7 +311,9 @@ If you are working in a new directory, copy those files in the current directory
 
             $FERMI_DIR/refdata/fermi/galdiffuse
 
-We are now ready to create our model. There is a user contributed tool called **make3FGLxml.py** which can be used to do that. Here below you find an example applied to our Crab nebula case:
+We are now ready to create our model. There is a user contributed tool called **make3FGLxml.py** which can be used to do that. You can find out all its options and command line arguments with `python make3FGLxml.py -h` or at the link [https://fermi.gsfc.nasa.gov/ssc/data/analysis/user/readme_make3FGLxml.txt](https://fermi.gsfc.nasa.gov/ssc/data/analysis/user/readme_make3FGLxml.txt).
+
+Here below you find an example applied to our Crab nebula case:
 
       [fermi-cta@localhost Crab_Flare_2014]$ python make3FGLxml.py gll_psc_v16.fit Crab_Flare_2014_05_09_phasecut.fits -o input_model.xml
       -G gll_iem_v06.fits -g gll_iem_v06 -I iso_P8R2_SOURCE_V6_v06.txt -i iso_P8R2_SOURCE_V6_v06 -r 0.1
@@ -334,7 +336,7 @@ A bit of explanation:
 - **-i** specifies the name of the isotropic emission in the output model
 - **-r** specifies the radius beyond which the parameters of the source will be fixed
 
-If you look into the output file of **make3FGLxml.xml** called input\_model.xml, there are 3 sources positionally consistent with the Crab:
+If you look into the output file of **make3FGLxml.py** called input\_model.xml, there are 3 sources positionally consistent with the Crab:
 
 ```html
 <source ROI_Center_Distance="0.005" name="3FGL J0534.5+2201i" type="PointSource">
@@ -443,7 +445,7 @@ with:
 </source>
 ```
 
-Of course you have to do the same for S147.
+Of course you have to do the same for S147. Otherwise, you can run again **make3FGLxml.py** with the additional option **-e /path/to/extended/sources/fits** and the path will be put in the extended sources definitions automatically. <br>
 
 To simplify more the model, we fixed the parameters of all the sources except the Crab, the galactic diffuse and isotropic emission. Since we requested the sources beyond 0.1 degrees to be fixed, this was done automatically with the script. Then we rename the output model.
 
