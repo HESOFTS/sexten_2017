@@ -231,9 +231,11 @@ We can create a count map of the output file (Crab\_Flare\_2014\_05\_09\_phasecu
 We can compare the two count maps:
 
 - before removal
+
 ![Crab count map: nebula + pulsar](crab_cmap.png)
 
 - after removal
+
 ![Crab count map: nebula](crab_nebula_cmap.png)
 
 
