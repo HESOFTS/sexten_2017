@@ -835,7 +835,7 @@ user 305.73
 sys 6.25
 ```
 
-## Model creation ##
+## Model creation and diffuse response calculation ##
 
 For the model creation, follow the same instructions for the creation of the model for the Crab nebula analysis. Once you created the model, supposing its name is Crab_SED.xml (if you want, you can find it in the repository: [Crab\_SED.xml](https://github.com/sharingan90/sexten_2017/blob/master/fermi/Crab_SED.xml), you can run **gtdiffrsp** through **diffResps**:
 
@@ -859,3 +859,145 @@ user 193.49
 sys 1.82
 ```
 
+## Likelihood ##
+
+Let's go on with the likelihood within python. First we have to import the **pyLikelihood** module and then the functions under the **UnbinnedAnalysis** namespace:
+
+```python
+>>> import pyLikelihood
+>>> from UnbinnedAnalysis import *
+```
+
+For more info on the **pyLikelihood** module usage, see [this page](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/python_usage_notes.html).
+
+Then we create **obs**, an object of type **UnbinnedObs**, for which we have to specify (in order) the name of the event file, the spacecraft file, the exposure map
+file, the livetime cube file and the IRF type:
+
+```python
+>>> obs = UnbinnedObs('Crab_selection_mkt.fits','L1707191130548796F97338_SC00.fits',
+expMap='Crab_selection_mkt_expmap.fits',expCube='Crab_selection_mkt_ltcube.fits',irfs='CALDB')
+```
+
+We can see the attributes of **obs** with a simple print statement:
+
+```python
+>>> print obs
+Event file(s): Crab_selection_mkt.fits
+Spacecraft file(s): L1707191130548796F97338_SC00.fits
+Exposure map: Crab_selection_mkt_expmap.fits
+Exposure cube: Crab_selection_mkt_ltcube.fits
+IRFs: CALDB
+```
+
+We now create **like**, a **UnbinnedAnalysis** object, which takes as attributes one **UnbinnedObs** object, the name of the XML model file and the name of the optimizer:
+
+```python
+>>> like = UnbinnedAnalysis(obs,'Crab_SED.xml',optimizer='NewMinuit')
+... (warnings that you can skip)
+>>> print(like)
+Event file(s): Crab_selection_mkt.fits
+Spacecraft file(s): L1707191130548796F97338_SC00.fits
+Exposure map: Crab_selection_mkt_expmap.fits
+Exposure cube: Crab_selection_mkt_ltcube.fits
+IRFs: CALDB
+Source model file: Crab_SED.xml
+Optimizer: NewMinuit
+```
+
+We can see the attributes of **like** with:
+
+```python
+>>> dir(like)
+['NpredValue', 'Ts', 'Ts_old', '_Nobs', '__call__', '__class__', '__delattr__', '__dict__', '__doc__',
+'__format__', '__getattribute__', '__getitem__', '__hash__', '__init__', '__module__', '__new__',
+'__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setitem__', '__sizeof__', '__str__',
+'__subclasshook__', '__weakref__', '_errors', '_importPlotter', '_inputs', '_isDiffuseOrNearby',
+'_minosIndexError', '_npredValues', '_plotData', '_plotResiduals', '_plotSource', '_renorm', '_separation',
+'_setSourceAttributes', '_srcCnts', '_srcDialog', '_xrange', 'addSource', 'covar_is_current', 'covariance',
+'deleteSource', 'disp', 'e_vals', 'energies', 'energyFlux', 'energyFluxError', 'fit', 'flux', 'fluxError',
+'freePars', 'freeze', 'getExtraSourceAttributes', 'logLike', 'maxdist', 'minosError', 'model', 'nobs',
+'normPar', 'observation', 'oplot', 'optObject', 'optimize', 'optimizer', 'par_index', 'params', 'plot',
+'plotSource', 'plotSourceFit', 'reset_ebounds', 'resids', 'restoreBestFit', 'saveCurrentFit', 'scan',
+'setEnergyRange', 'setFitTolType', 'setFreeFlag', 'setPlotter', 'setSpectrum', 'sourceFitPlots',
+'sourceFitResids', 'sourceNames', 'srcModel', 'state', 'syncSrcParams', 'thaw', 'tol', 'tolType',
+'total_nobs', 'writeCountsSpectra', 'writeXml']
+```
+
+Now, to perform the SED, we need an user contributed script. We exit python and type inside the SED directory:
+
+```bash
+$ wget https://fermi.gsfc.nasa.gov/ssc/data/analysis/user/SED_scripts_v13.1.tgz
+$ tar -zxvf SED_scripts_v13.1.tgz
+$ cp SED_scripts_v13.1/likeSED.p* .
+```
+
+The documentation for the python SED script is [here](https://fermi.gsfc.nasa.gov/ssc/data/analysis/user/likeSEDmacros_UsageNotes_v13.pdf).
+
+We go back to the python shell and setup few things:
+
+```python
+>>> from likeSED import *
+>>> inputs = likeInput(like,'CrabNebula',nbins=5)
+>>> inputs.plotBins()
+```
+
+The **plotbins** method just calculates the exposure map for each energetic band that we selected (*nbins* parameter).
+
+```python
+>>> inputs.fullFit(CoVar=True)
+Full energy range model for CrabNebula:
+CrabNebula
+   Spectrum: PowerLaw
+393    Prefactor:  7.070e+01  5.937e+00  1.000e-03  1.000e+03 ( 1.000e-09)
+394        Index: -2.541e+00  6.144e-02 -5.000e+00 -1.000e+00 ( 1.000e+00)
+395        Scale:  1.000e+02  0.000e+00  3.000e+01  2.000e+03 ( 1.000e+00) fixed
+
+Flux 0.1-300.0 GeV 4.6e-06 +/- 3.2e-07 cm^-2 s^-1
+Test Statistic 434.843726813
+>>> sed = likeSED(inputs)
+>>> sed.getECent()
+>>> sed.fitBands()
+  -Runnng Likelihood for band0-
+  -Runnng Likelihood for band1-
+  -Runnng Likelihood for band2-
+  -Runnng Likelihood for band3-
+0 66.3165318111 8.41680777341e-06 1.40483159789e-08
+1 66.9940318111 7.5470495517e-05 1.41914291837e-08
+2 67.6715318111 0.000335507354478 1.43348868787e-08
+... omitted output
+169 180.814031811 1.34086139142 3.83040885654e-08
+170 181.491531811 1.35296079983 3.84476139971e-08
+171 182.169031811 1.36508712336 3.85911442723e-08
+    NOTE: Band3, with center energy 18.7290305302 GeV, quoting 95% upper limit on flux.
+```
+
+What we did here was:
+
+* perform the fit for the full energetic band calling the *fullFit* method and ckeeping the covariance matrix
+* create a *likeSED* object
+* get the centers of the energy bins with the *getECent* method
+* perform the fit for each energy band
+
+At this point we can call the *Plot* method to see the results:
+
+```python
+>>> sed.Plot()
+```
+
+The resulting plot are here below:
+
+- SED
+
+![Crab SED](Crab_SED.png)
+
+- count spectrum
+
+![Crab count spectrum](Crab_count_spectrum.png)
+
+- TS vs energy plot
+
+![Crab TS vs energy plot](Crab_TS.png)
+
+This concludes the tutorial. By now you should be able how to perform the likelihood analysis with the Fermi tools and to create the SED of the Crab with the Python wrappers.
+
+CONGRATULATIONS! :D
