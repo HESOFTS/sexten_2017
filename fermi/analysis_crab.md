@@ -973,7 +973,7 @@ Test Statistic 434.843726813
 
 What we did here was:
 
-* perform the fit for the full energetic band calling the *fullFit* method and ckeeping the covariance matrix
+* perform the fit for the full energetic band calling the *fullFit* method and keeping the covariance matrix
 * create a *likeSED* object
 * get the centers of the energy bins with the *getECent* method
 * perform the fit for each energy band
@@ -984,7 +984,7 @@ At this point we can call the *Plot* method to see the results:
 >>> sed.Plot()
 ```
 
-The resulting plot are here below:
+The resulting plots are here below:
 
 - SED
 
