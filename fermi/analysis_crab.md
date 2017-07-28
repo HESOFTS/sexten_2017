@@ -591,4 +591,238 @@ We compare these values with the one in the paper [https://arxiv.org/abs/1308.66
 The flux we found is higher than the one in the paper: this is most probably because we modeled the Crab with just a power law, while in the paper the Crab emission was split into three different components (pulsar emission, Inverse Compton and Synchrotron emission from the nebula) with different spectral functions. <br>
 In any case we can see that the spectral index is softer than usual because of the flare, so that we have more low energy photons. You can repeat the analysis, like I did, cutting at 1 GeV instead of 100 MeV for the low energy end of the data selection and see that the spectrum will harden. <br>
 
-Now that we finished the likelihood, you can try to do the same analysis with the Python wrappers of the Fermi Tools: [https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/python_tutorial.html](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/python_tutorial.html)
+# Fermi analysis from Python #
+
+Now that we finished the likelihood, we can try to do the same analysis with the Python wrappers of the Fermi Tools: [https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/python_tutorial.html](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/python_tutorial.html). Wrapper just means the following thing: you will use python only to set up the settings for the several executables we used before (**gtselect**, **gtmktime**, **gtltcube** and so on), but at the end the same executables will be called under the hood. So it's not like the Fermi Tools were re-written in Python.
+
+
+
+## Data set ##
+
+For the Fermi/Python tutorial, we will use again Crab data but from the whole 2016 year. We will not do any pulse phase selection, so we are considering both the pulsar and the nebula. The settings I used when I downloaded the data from the LAT Data Server are:
+
+* Object name or coordinates: Crab 
+* Coordinate system: J2000  
+* Search radius (degrees): 30 
+* Observation dates: 2016-01-01 00:00:00, 2017-01-01 00:00:00
+* Time system: Gregorian
+* Energy range (MeV): 100, 500000
+* LAT data type: Photon
+* Spacecraft data: Checked
+
+In principle you should get 4 photon FT1 files and one spacecraft file. Of course we will do a selection, otherwise the analysis would take too much time. To do that we will use only the first photon file.
+
+For those who are using the virtual machine, the photon file and the spacecraft file (L1707191130548796F97338_PH00.fits and L1707191130548796F97338_SC00.fits) are in the Crab\_2016 directory inside the shared folder.
+
+If you downloaded the data with the previous settings, take only the first photon file (the one with PH00 in the name) and the spacecraft file.
+
+In the following we will refer to the files in the Crab_2016 directory, so make the needed changes if you are using data downloaded by yourself.
+
+## Selection of data ##
+
+As before, if you are using the VM, you have to set the Fermi Tools:
+
+      [fermi-cta@localhost ]$ source $HOME/fermitools_heasoft.sh
+
+Then you can enter in the Crab\_2016 directory inside the shared folder (or enter in the directory where you have the files you downloaded). Create a directory called SED
+and move the first photon file and the spacecraft file:
+
+      [fermi-cta@localhost ]$ cd /media/sf_Share/Crab_2016
+      [fermi-cta@localhost ]$ mkdir SED
+      [fermi-cta@localhost ]$ mv L*PH00.fits L*SC00.fits SED/
+      [fermi-cta@localhost ]$ cd SED
+
+At this point we can dig into python (`>>>` is the python interpreter prompt):
+
+      [fermi-cta@localhost ]$ python
+      Python 2.7.8 (default, May 20 2015, 15:32:59) 
+      [GCC 4.8.3 20140911 (Red Hat 4.8.3-9)] on linux2
+      Type "help", "copyright", "credits" or "license" for more information.
+      >>>
+
+Now, to use the python wrappers of the Fermi tools, you need to import the module named **gt\_apps**. We will import it with the name **my_apps**:
+
+```python
+>>> import gt_apps as my_apps
+```
+
+For almost all the Fermi tools executables like **gtselect**, **gtmktime**, **gtexpmap** and so on, the module **gt\_apps** defines a different python object whose attributes are the same as the
+command line arguments of the executables.
+
+For example, the corresponding python object for **gtselect** is called **filter**. The attributes are set through python dictionaries (key, value pairs) like shown below:
+
+```python
+>>> my_apps.filter['evclass'] = 128
+>>> my_apps.filter['evtype'] = 3
+>>> my_apps.filter['ra'] = 83.633
+>>> my_apps.filter['dec'] = 22.014
+>>> my_apps.filter['rad'] = 10
+>>> my_apps.filter['emin'] = 100
+>>> my_apps.filter['emax'] = 300000
+>>> my_apps.filter['zmax'] = 90
+>>> my_apps.filter['tmin'] = 473300000
+>>> my_apps.filter['tmax'] = 473400000
+>>> my_apps.filter['infile'] = 'L1707191130548796F97338_PH00.fits'
+>>> my_apps.filter['outfile'] = 'Crab_selection.fits'
+```
+
+The meaning of the different keys is pretty self-explanatory. In our case, we reduced the ROI to 10 deg of radius, made a cut in time and reduced the highest energy to 300 GeV.
+
+If you need help or documentation, just do:
+
+```python
+>>> help(my_apps)
+```
+
+To run **gtselect** through the python wrapper **filter**, just use the **run()** method:
+
+```python
+>>> my_apps.filter.run()
+time -p /home/fermi-cta/ScienceTools/x86_64-unknown-linux-gnu-libc2.17/bin/gtselect 
+infile=L1707191130548796F97338_PH00.fits outfile=Crab_selection.fits ra=83.633 dec=22.014
+rad=10.0 tmin=473300000.0 tmax=473400000.0 emin=100.0 emax=300000.0 zmin=0.0 zmax=90.0
+evclass=128 evclsmin=0 evclsmax=10 evtype=3 convtype=-1 phasemin=0.0 phasemax=1.0 evtable="EVENTS"
+chatter=2 clobber=yes debug=no gui=no mode="ql"
+Done.
+real 3.89
+user 1.33
+sys 1.41
+```
+
+When calling **run()**, the terminal will show you the command called with the Fermi Tools, in this case **gtselect**, with all the proper command line arguments. You can see that there are some
+command line arguments whose values we didn't set through the **filter** attributes. In those cases, the default values are taken e.g. phasemin and phasemax are 0 and 1 respectively i.e. no cut in phase is done.
+If we would like to put a cut in the phase, we could do it setting the value for **phasemin** and **phasemax** like we did for the other attributes.
+
+The philosophy shown for **gtselect** works for all the other executables, as long as we know the name of the corresponding python object.
+
+We go on with **gtmktime** and its python object **maketime**:
+
+```python
+>>> my_apps.maketime['scfile'] = 'L1707191130548796F97338_SC00.fits'
+>>> my_apps.maketime['filter'] = '(DATA_QUAL>0)&&(LAT_CONFIG==1)'
+>>> my_apps.maketime['roicut'] = 'no'
+>>> my_apps.maketime['evfile'] = 'Crab_selection.fits'
+>>> my_apps.maketime['outfile'] = 'Crab_selection_mkt.fits'
+>>> my_apps.maketime.run()
+time -p /home/fermi-cta/ScienceTools/x86_64-unknown-linux-gnu-libc2.17/bin/gtmktime
+scfile=L1707191130548796F97338_SC00.fits sctable="SC_DATA" filter="(DATA_QUAL>0)&&(LAT_CONFIG==1)"
+roicut=no evfile=Crab_selection.fits evtable="EVENTS" outfile="Crab_selection_mkt.fits" apply_filter=yes
+overwrite=no header_obstimes=yes tstart=0.0 tstop=0.0 gtifile="default" chatter=2 clobber=yes debug=no
+gui=no mode="ql"
+real 3.25
+user 0.13
+sys 1.58
+```
+
+Before creating the count map, we want to see if our cuts are ok. Since there is no default python object for **gtvcut**, we have to create it:
+
+```python
+>>> from GtApp import GtApp
+>>> vcut = GtApp('gtvcut', 'Likelihood')
+>>> vcut.command()
+'time -p /home/fermi-cta/ScienceTools/x86_64-unknown-linux-gnu-libc2.17/bin/gtvcut infile= table="EVENTS"
+suppress_gtis=yes chatter=2 debug=no gui=no mode="ql"'
+>>> vcut['infile'] = 'Crab_selection_mkt.fits'
+>>> vcut.run()
+time -p /home/fermi-cta/ScienceTools/x86_64-unknown-linux-gnu-libc2.17/bin/gtvcut infile=Crab_selection_mkt.fits
+table="EVENTS" suppress_gtis=yes chatter=2 debug=no gui=no mode="ql"
+DSTYP1: BIT_MASK(EVENT_CLASS,128,P8R2)
+DSUNI1: DIMENSIONLESS
+DSVAL1: 1:1
+
+DSTYP2: POS(RA,DEC)
+DSUNI2: deg
+DSVAL2: CIRCLE(83.633,22.014,10)
+
+DSTYP3: TIME
+DSUNI3: s
+DSVAL3: TABLE
+DSREF3: :GTI
+
+GTIs: (suppressed)
+
+DSTYP4: BIT_MASK(EVENT_TYPE,3,P8R2)
+DSUNI4: DIMENSIONLESS
+DSVAL4: 1:1
+
+DSTYP5: ENERGY
+DSUNI5: MeV
+DSVAL5: 100:300000
+
+DSTYP6: ZENITH_ANGLE
+DSUNI6: deg
+DSVAL6: 0:90
+
+real 0.13
+user 0.06
+sys 0.03
+```
+
+After seeing that everything is fine, we can go on with the count map, using the **evtbin** object:
+
+```python
+>>> my_apps.evtbin['algorithm'] = 'CMAP'
+>>> my_apps.evtbin['emin'] = 100
+>>> my_apps.evtbin['emax'] = 300000
+>>> my_apps.evtbin['evfile'] = 'Crab_selection_mkt.fits'
+>>> my_apps.evtbin['scfile'] = 'L1707191130548796F97338_SC00.fits'
+>>> my_apps.evtbin['outfile'] = 'Crab_selection_mkt_cmap.fits'
+>>> my_apps.evtbin['nxpix'] = 120
+>>> my_apps.evtbin['nypix'] = 120
+>>> my_apps.evtbin['binsz'] = 0.25
+>>> my_apps.evtbin['coordsys'] = 'CEL'
+>>> my_apps.evtbin['xref'] = 83.633
+>>> my_apps.evtbin['yref'] = 22.014
+>>> my_apps.evtbin['axisrot'] = 0
+>>> my_apps.evtbin['proj'] = 'AIT'
+>>> my_apps.evtbin.run()
+time -p /home/fermi-cta/ScienceTools/x86_64-unknown-linux-gnu-libc2.17/bin/gtbin evfile=Crab_selection_mkt.fits
+scfile=L1707191130548796F97338_SC00.fits outfile=Crab_selection_mkt_cmap.fits algorithm="CMAP" ebinalg="LOG"
+emin=100.0 emax=300000.0 ebinfile=NONE tbinalg="LIN" tbinfile=NONE nxpix=120 nypix=120 binsz=0.25 coordsys="CEL"
+xref=83.633 yref=22.014 axisrot=0.0 rafield="RA" decfield="DEC" proj="AIT" hpx_ordering_scheme="RING" hpx_order=3
+hpx_ebin=yes evtable="EVENTS" sctable="SC_DATA" efield="ENERGY" tfield="TIME" chatter=2 clobber=yes debug=no gui=no
+mode="ql"
+This is gtbin version ScienceTools-v10r0p5-fssc-20150518
+real 2.37
+user 0.20
+sys 1.38
+```
+
+## Exposure map calculation ##
+
+Let's go on with **gtltcube** and **gtexpmap**, whose python objects are **expCube** and **expMap** respectively:
+
+```python
+>>> my_apps.expCube['evfile'] = 'Crab_selection_mkt.fits'
+>>> my_apps.expCube['scfile'] = 'L1707191130548796F97338_SC00.fits'
+>>> my_apps.expCube['outfile'] = 'Crab_selection_mkt_ltcube.fits'
+>>> my_apps.expCube['zmax'] = 90
+>>> my_apps.expCube['dcostheta'] = 0.025
+>>> my_apps.expCube['binsz'] = 1
+>>> my_apps.expCube.run()
+
+>>> my_apps.expMap['evfile'] = 'Crab_selection_mkt.fits'
+>>> my_apps.expMap['scfile'] = 'L1707191130548796F97338_SC00.fits'
+>>> my_apps.expMap['expcube'] = 'Crab_selection_mkt_ltcube.fits'
+>>> my_apps.expMap['outfile'] = 'Crab_selection_mkt_expmap.fits'
+>>> my_apps.expMap['irfs'] = 'CALDB'
+>>> my_apps.expMap['srcrad'] = 30
+>>> my_apps.expMap['nlong'] = 120
+>>> my_apps.expMap['nlat'] = 120
+>>> my_apps.expMap['nenergies'] = 20
+>>> my_apps.expMap.run()
+```
+
+## Model creation ##
+
+For the model creation, follow the same instructions for the creation of the model for the Crab nebula analysis. Once you created the model, supposing its name is Crab_SED.xml, you can run
+**gtdiffrsp** through **diffResps**:
+
+```python
+>>> my_apps.diffResps['evfile'] = 'Crab_selection_mkt.fits'
+>>> my_apps.diffResps['scfile'] = 'L1707191130548796F97338_SC00.fits'
+>>> my_apps.diffResps['srcmdl'] = 'Crab_SED.xml'
+>>> my_apps.diffResps['irfs'] = 'CALDB'
+>>> my_apps.diffResps.run()
+```
+
