@@ -4,7 +4,7 @@
 
 We all know that the Crab has a nebula and a pulsar. From Fermi data, it is possible to disentangle, even if not completely, the emission
 from the nebula and from the pulsar. To do this, we will have to assign a pulse phase to each photon according to the pulsar properties like spin period, derivative and so on. These information are contained in the so called ephemerides of the pulsar. Usually you can find the ephemerides here: [https://fermi.gsfc.nasa.gov/ssc/data/access/lat/ephems/](https://fermi.gsfc.nasa.gov/ssc/data/access/lat/ephems/). <br>
-The ephemerides I used were provided by Matthew Kerr, but they are already present in the data set. <br>
+The ephemerides I used were provided by Matthew Kerr, but they are in the repository. <br>
 
 The data we are going to analyze are from the Crab flare of March 2013. You can find a reference in [https://arxiv.org/abs/1308.6698v1](https://arxiv.org/abs/1308.6698v1). <br>
 
@@ -12,23 +12,42 @@ This file contains all the commands I run to perform the pulse assignment of the
 and the likelihood analysis. <br>
 All the commands were run from the Crab\_Flare\_2014 directory. (I called it 2014 by mistake, I realized too late '-.-) <br>
 In order not to overwrite the files in the directory, you can create a new one and copy the
-event and spacescraft files (L1707191221448796F97375\_PH00.fits and L1707191221448796F97375\_SC00.fits) and 
+event and spacecraft files (L1707191221448796F97375\_PH00.fits and L1707191221448796F97375\_SC00.fits) and 
 the ephemerides file (Crab\_ephem\_new.par) in the new directory. <br>
 After that you can issue the same commands you find below. 
 
+Another possibility is to download the same dataset I used, see the section "Setup and data selection" of this tutorial. Of course the names of the files will be different at that point, so be careful.
+
 You can find the content of this tutorial at the links [https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/pulsar\_gating\_tutorial.html](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/pulsar_gating_tutorial.html) and [https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/likelihood_tutorial.html](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/likelihood_tutorial.html).
+
+## A bit of nomenclature ##
+
+During the Fermi analysis, there will be few recurring terms which can be useful to define here:
+
+* FT1 file or events file: it is the FITS file containing the events
+* FT2 file or spacecraft file: it is the file containing the information of the spacecraft (position, pointing direction ecc..)
+* ROI (Region Of Interest): it is the circular region selected when downloading the data, which can be modified during the analysis
+* Source region: it is the circular region where we are going to consider the sources (point-like or extended) which can contribute to the counts in the ROI. Usually it is bigger than the ROI
 
 ## Setup and data selection ##
 
 The data were already downloaded, so we don't need to download them. In any case, the link to
-the LAT Data Server is [https://fermi.gsfc.nasa.gov/cgi-bin/ssc/LAT/LATDataQuery.cgi](https://fermi.gsfc.nasa.gov/cgi-bin/ssc/LAT/LATDataQuery.cgi). <br>
+the LAT Data Server is [https://fermi.gsfc.nasa.gov/cgi-bin/ssc/LAT/LATDataQuery.cgi](https://fermi.gsfc.nasa.gov/cgi-bin/ssc/LAT/LATDataQuery.cgi). If you want to analyze the same dataset, here below you can find the settings to be used in the LAT data server:
+
+* Object name or coordinates: Crab 
+* Coordinate system: J2000  
+* Search radius (degrees): 30 
+* Observation dates: 383270403, 385300803
+* Time system: MET
+* Energy range (MeV): 100, 500000
+* LAT data type: Photon
+* Spacecraft data: Checked
 
 First we setup the Fermi tools:
 
       [fermi-cta@localhost Crab_Flare_2014]$ source $HOME/fermitools_heasoft.sh
 
-Then we use **gtselect** to do data selection. Since the data I downloaded were on a region of 30 deg radius and 100 MeV-500 GeV energy range, I will shrink the radius down to 15 deg and modify the energy range
-to 100 MeV-300 GeV. When running **gtselect** and other Fermi tools executables, you will get a prompt with the inputs needed. Also, I specify the event class and event type (see the introduction to the hands on done on Monday by Francesco).
+Then we use **gtselect** to do data selection. Since the data I downloaded were on a region of 30 deg radius and 100 MeV-500 GeV energy range, I will shrink the radius of the ROI down to 15 deg and modify the energy range to 100 MeV-300 GeV. When running **gtselect** and other Fermi tools executables, you will get a prompt with the inputs needed. Also, I specify the event class and event type (see the introduction to the hands on done on Monday by Francesco).
 
       [fermi-cta@localhost Crab_Flare_2014]$ gtselect evclass=128 evtype=3
       Input FT1 file[] L1707191221448796F97375_PH00.fits
@@ -146,9 +165,13 @@ Again, check the image with **ds9**:
 
 ## Pulse assignment ##
 
-Since when I did the analysis in the Crab\_Flare\_2014 directory I had two ephemerides files, I renamed Crab\_Flare\_2014\_gti.fits:
+Since when I did the analysis in the Crab\_Flare\_2014 directory I had two ephemeris files, I renamed Crab\_Flare\_2014\_gti.fits:
 
       [fermi-cta@localhost Crab_Flare_2014]$ mv Crab_Flare_2014_gti.fits Crab_Flare_gti_new_ephem.fits
+
+For the pulse assigment, we need the pulsar ephemeris. It is just a plain text file with the pulsar features: rotational frequency and first two derivatives, dispersion measure, time range of the validity of the ephemeris and so on. You can see that looking into Crab\_ephem\_new.par. <br>
+
+An explanation of the computations done during pulse phase assignment can be found [here](https://fermi.gsfc.nasa.gov/ssc/data/analysis/documentation/Cicerone/Cicerone_Pulsars/).
 
 To perform the pulse assignment of the events, we use the Fermi plugin of TEMPO2. It will add a column called PULSE\_PHASE to our event file with the pulse phase of each event.
 
