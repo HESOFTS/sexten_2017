@@ -8,7 +8,7 @@ Everything you need to know about installing VirtualBox and running the Virtual 
 ## Hands-on available
 During the school, there will be few hands-on on softwares used in High Energy and Very High Energy Astrophysics, namely:
 
-1. Fermi Science Tools ([https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/overview.html](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/overview.html)), used for the analysis of Fermi-LAT data
+1. Fermi Science Tools ([https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/overview.html](https://fermi.gsfc.nasa.gov/ssc/data/analysis/scitools/overview.html)), used for the analysis of Fermi-LAT data. You can find the tutorials [here](https://github.com/sharingan90/sexten_2017/tree/master/fermi)
 2. ctools ([http://cta.irap.omp.eu/ctools/](http://cta.irap.omp.eu/ctools/)), the software currently being developed for the analysis of the future Cherenkov observatory CTA
 3. gammapy ([http://docs.gammapy.org/en/latest/](http://docs.gammapy.org/en/latest/)), an alternative of ctools but can be used for the analysis of general gamma-ray astronomy data
 
