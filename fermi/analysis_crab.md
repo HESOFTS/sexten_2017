@@ -998,6 +998,27 @@ The resulting plots are here below:
 
 ![Crab TS vs energy plot](Crab_TS.png)
 
+At this point you should have the following files in your directory, after the SED creation:
+
+* three EPS images corresponding to the previous plots
+* one ROOT file where the plots are saved
+* one FITS file in which all the data used to produce the plots are stored.
+
+The tables needed for the plots production (except the TS one) are the following:
+
+* the **DATA FLUX** table, with 5 columns:
+
+   1. the center of the energy bins
+   2. dN/dE in each energy bin
+   3. the error on dN/dE
+   4. E^2\*dN/dE in each energy bin
+   5. the error on E^2\*dN/dE
+
+* the **DATA ENERGY BINS** table, with 2 columns:
+
+   1. the low edges of the bins
+   2. the high edges of the bins
+
 This concludes the tutorial. By now you should be able how to perform the likelihood analysis with the Fermi tools and to create the SED of the Crab with the Python wrappers.
 
 CONGRATULATIONS! :D
