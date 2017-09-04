@@ -41,7 +41,7 @@ The order must be as follows:
 <li><b>Spatial models</b> You must be one of the following: 
    <ul>
    <li>Point</li>
-   <li>RanDisk</li>
+   <li>RadDisk</li>
    <li>RadGauss</li>
    <li>RadShell</li>
    <li>EllDisk</li>
