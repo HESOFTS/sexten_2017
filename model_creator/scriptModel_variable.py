@@ -470,7 +470,7 @@ def show_xml(xml):
 	xml.write(url)
 	
 	# Print URL buffer
-	if ver != '': print(url.string())
+	#if ver != '': print(url.string())
 	
 	# Return
 	return
