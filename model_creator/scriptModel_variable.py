@@ -249,7 +249,7 @@ def specFun(inSpec):
 		#CONSTANT MODEL
 		if ver != '': print('Spectral model: ' + SpecModel)
 		norm = float(inSpec[1])        
-		norm_text='parameter scale="'+numdiv(pref)[1]+'"  name="Normalization"  min="1e-7"   max="1000"  free="1" value="'+numdiv(pref)[0]+'"'
+		norm_text='parameter scale="'+numdiv(norm)[1]+'"  name="Normalization"  min="1e-7"   max="1000"  free="1" value="'+numdiv(norm)[0]+'"'
 		spectral = gammalib.GXmlElement('spectrum type="ConstantValue"')                
 		spectral.append(norm_text)
 
